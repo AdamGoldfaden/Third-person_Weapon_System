@@ -26,15 +26,21 @@ APlayerCharacter::APlayerCharacter()
 	GetCharacterMovement()->AirControl = 0.2f;
 
 	// Create a camera boom (pulls in towards the player if there is a collision)
-	CameraBoom = CreateDefaultSubobject<USpringArmComponent>(TEXT("CameraBoom"));
-	CameraBoom->SetupAttachment(RootComponent);
-	CameraBoom->bUsePawnControlRotation = true; // Rotate the arm based on the controller
+	SpringArm = CreateDefaultSubobject<USpringArmComponent>(TEXT("Default SpringArm"));
+	SpringArm->SetupAttachment(RootComponent);
+	SpringArm->bUsePawnControlRotation = true; // Rotate the arm based on the controller
+
+	AimingSpringArm = CreateDefaultSubobject<USpringArmComponent>(TEXT("Aiming SpringArm"));
+	AimingSpringArm->SetupAttachment(RootComponent);
+	AimingSpringArm->bUsePawnControlRotation = true;
 
 	// Create a follow camera
-	FollowCamera = CreateDefaultSubobject<UCameraComponent>(TEXT("FollowCamera"));
+	Camera = CreateDefaultSubobject<UCameraComponent>(TEXT("Camera"));
 	// Attach the camera to the end of the boom and let the boom adjust to match the controller orientation
-	FollowCamera->SetupAttachment(CameraBoom, USpringArmComponent::SocketName);
-	FollowCamera->bUsePawnControlRotation = false; // Camera does not rotate relative to arm
+	Camera->SetupAttachment(SpringArm, USpringArmComponent::SocketName);
+	Camera->bUsePawnControlRotation = false; // Camera does not rotate relative to arm
+
+	StartingFieldOfView = Camera->FieldOfView;
 }
 
 // Called when the game starts or when spawned
@@ -48,7 +54,40 @@ void APlayerCharacter::BeginPlay()
 void APlayerCharacter::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
+	
+	if (bIsAiming)
+	{
+		//Camera->SetFieldOfView(FMath::FInterpTo(Camera->FieldOfView, AimingFieldOfView, DeltaTime, 20.f));
+		
+	}
+	else
+	{
+		//Camera->SetFieldOfView(FMath::FInterpTo(Camera->FieldOfView, StartingFieldOfView, DeltaTime, 20.f));
+	}
 
+	Camera->SetRelativeLocation(FMath::VInterpTo(Camera->GetRelativeLocation(), FVector(0.f,0.f,0.f), DeltaTime, AimingSpeed));
+}
+
+void APlayerCharacter::StartShootingGun()
+{
+
+}
+
+void APlayerCharacter::StopShootingGun()
+{
+
+}
+
+void APlayerCharacter::StartAiming()
+{
+	bIsAiming = true;
+	Camera->AttachToComponent(AimingSpringArm, FAttachmentTransformRules::KeepWorldTransform, USpringArmComponent::SocketName);
+}
+
+void APlayerCharacter::StopAiming()
+{
+	bIsAiming = false;
+	Camera->AttachToComponent(SpringArm, FAttachmentTransformRules::KeepWorldTransform, USpringArmComponent::SocketName);
 }
 
 // Called to bind functionality to input
@@ -75,31 +114,6 @@ void APlayerCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCom
 	PlayerInputComponent->BindAxis("TurnRate", this, &APlayerCharacter::TurnAtRate);
 	PlayerInputComponent->BindAxis("LookUp", this, &APawn::AddControllerPitchInput);
 	PlayerInputComponent->BindAxis("LookUpRate", this, &APlayerCharacter::LookUpAtRate);
-}
-
-void APlayerCharacter::StartShootingGun()
-{
-
-}
-
-void APlayerCharacter::StopShootingGun()
-{
-
-}
-
-void APlayerCharacter::StartAiming()
-{
-	bIsAiming = true;
-}
-
-void APlayerCharacter::StopAiming()
-{
-	bIsAiming = false;
-}
-
-bool APlayerCharacter::GetIsAiming() const
-{
-	return bIsAiming;
 }
 
 void APlayerCharacter::TurnAtRate(float Rate)

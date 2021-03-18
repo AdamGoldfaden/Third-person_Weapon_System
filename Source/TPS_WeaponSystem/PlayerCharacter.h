@@ -11,15 +11,25 @@ class TPS_WEAPONSYSTEM_API APlayerCharacter : public ACharacter
 
 private:
 
-	bool bIsAiming;
+	bool bIsAiming = false;
+	float StartingFieldOfView;
+
+	UPROPERTY(EditAnywhere)
+	float AimingFieldOfView = 50.f;
+
+	UPROPERTY(EditAnywhere)
+	float AimingSpeed = 10.f;
 
 	/** Camera boom positioning the camera behind the character */
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Camera, meta = (AllowPrivateAccess = "true"))
-	class USpringArmComponent* CameraBoom;
+	class USpringArmComponent* SpringArm;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Camera, meta = (AllowPrivateAccess = "true"))
+	class USpringArmComponent* AimingSpringArm;
 
 	/** Follow camera */
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Camera, meta = (AllowPrivateAccess = "true"))
-	class UCameraComponent* FollowCamera;
+	class UCameraComponent* Camera;
 
 protected:
 	// Called when the game starts or when spawned
@@ -58,8 +68,6 @@ public:
 	void StartAiming();
 	void StopAiming();
 
-	bool GetIsAiming() const;
-
 	/** Base turn rate, in deg/sec. Other scaling may affect final turn rate. */
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Camera)
 	float BaseTurnRate;
@@ -69,8 +77,10 @@ public:
 	float BaseLookUpRate;
 
 	/** Returns CameraBoom subobject **/
-	FORCEINLINE class USpringArmComponent* GetCameraBoom() const { return CameraBoom; }
+	FORCEINLINE class USpringArmComponent* GetSpringArm() const { return SpringArm; }
 	/** Returns FollowCamera subobject **/
-	FORCEINLINE class UCameraComponent* GetFollowCamera() const { return FollowCamera; }
+	FORCEINLINE class UCameraComponent* GetCamera() const { return Camera; }
+
+	FORCEINLINE bool GetIsAiming() const { return bIsAiming; }
 
 };
