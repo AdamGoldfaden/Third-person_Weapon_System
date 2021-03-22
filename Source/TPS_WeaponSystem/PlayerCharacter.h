@@ -28,6 +28,7 @@ private:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Camera, meta = (AllowPrivateAccess = "true"))
 	class UCameraComponent* Camera;
 
+
 protected:
 	virtual void BeginPlay() override;
 
@@ -54,7 +55,9 @@ public:
 	
 	FORCEINLINE class USpringArmComponent* GetSpringArm() const { return SpringArm; }
 	FORCEINLINE class UCameraComponent* GetCamera() const { return Camera; }
-	FORCEINLINE bool GetIsAiming() const { return bIsAiming; }
+
+	UFUNCTION(BlueprintPure)
+	bool GetIsAiming() const { return bIsAiming; }
 
 	/** Base turn rate, in deg/sec. Other scaling may affect final turn rate. */
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Camera)
