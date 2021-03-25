@@ -5,6 +5,7 @@
 #include "GameFramework/CharacterMovementComponent.h"
 #include "GameFramework/Controller.h"
 #include "GameFramework/SpringArmComponent.h"
+#include "Gun_Base.h"
 
 APlayerCharacter::APlayerCharacter()
 {
@@ -38,24 +39,25 @@ APlayerCharacter::APlayerCharacter()
 	// Attach the camera to the end of the boom and let the boom adjust to match the controller orientation
 	Camera->SetupAttachment(SpringArm, USpringArmComponent::SocketName);
 	Camera->bUsePawnControlRotation = false; // Camera does not rotate relative to arm
-
-	//StartingFieldOfView = Camera->FieldOfView;
 }
 
 void APlayerCharacter::BeginPlay()
 {
 	Super::BeginPlay();
-	
+
+	Gun = GetWorld()->SpawnActor<AGun_Base>(StartingGunClass);
+	Gun->AttachToComponent(GetMesh(), FAttachmentTransformRules::KeepRelativeTransform, TEXT("WeaponSocket"));
+	Gun->SetOwner(this);
 }
 
 void APlayerCharacter::StartShootingGun()
 {
-
+	Gun->StartShooting();
 }
 
 void APlayerCharacter::StopShootingGun()
 {
-
+	Gun->StopShooting();
 }
 
 void APlayerCharacter::StartAiming()
@@ -70,19 +72,25 @@ void APlayerCharacter::StopAiming()
 	Camera->AttachToComponent(SpringArm, FAttachmentTransformRules::KeepWorldTransform, USpringArmComponent::SocketName);
 }
 
+void APlayerCharacter::SwitchGun(EGunType GunType)
+{
+	PreviousGunType = CurrentGunType;
+	CurrentGunType = GunType;
+}
+
+void APlayerCharacter::SwitchToPreviousGun()
+{
+	CurrentGunType = PreviousGunType;
+}
+
+void APlayerCharacter::ReloadRun()
+{
+	Gun->Reload();
+}
+
 void APlayerCharacter::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
-	
-	if (bIsAiming)
-	{
-		//Camera->SetFieldOfView(FMath::FInterpTo(Camera->FieldOfView, AimingFieldOfView, DeltaTime, 20.f));
-		
-	}
-	else
-	{
-		//Camera->SetFieldOfView(FMath::FInterpTo(Camera->FieldOfView, StartingFieldOfView, DeltaTime, 20.f));
-	}
 
 	Camera->SetRelativeLocation(FMath::VInterpTo(Camera->GetRelativeLocation(), FVector(0.f,0.f,0.f), DeltaTime, AimingSpeed));
 }
@@ -102,6 +110,8 @@ void APlayerCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCom
 	PlayerInputComponent->BindAction("Shoot", IE_Released, this, &APlayerCharacter::StopShootingGun);
 	PlayerInputComponent->BindAction("Aim", IE_Pressed, this, &APlayerCharacter::StartAiming);
 	PlayerInputComponent->BindAction("Aim", IE_Released, this, &APlayerCharacter::StopAiming);
+	PlayerInputComponent->BindAction("Reload", IE_Pressed, this, &APlayerCharacter::ReloadRun);
+	PlayerInputComponent->BindAction("SwitchToPreviousGun", IE_Pressed, this, &APlayerCharacter::SwitchToPreviousGun);
 
 	//Axis mappings
 	PlayerInputComponent->BindAxis("MoveForward", this, &APlayerCharacter::MoveForward);

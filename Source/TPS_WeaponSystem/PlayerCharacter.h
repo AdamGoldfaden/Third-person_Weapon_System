@@ -4,6 +4,9 @@
 #include "GameFramework/Character.h"
 #include "PlayerCharacter.generated.h"
 
+class AGun_Base;
+enum EGunType;
+
 UCLASS()
 class TPS_WEAPONSYSTEM_API APlayerCharacter : public ACharacter
 {
@@ -11,10 +14,8 @@ class TPS_WEAPONSYSTEM_API APlayerCharacter : public ACharacter
 
 private:
 	bool bIsAiming = false;
-	float StartingFieldOfView;
-
-	UPROPERTY(EditAnywhere)
-	float AimingFieldOfView = 50.f;
+	EGunType PreviousGunType;
+	EGunType CurrentGunType;
 
 	UPROPERTY(EditAnywhere)
 	float AimingSpeed = 10.f;
@@ -28,6 +29,20 @@ private:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Camera, meta = (AllowPrivateAccess = "true"))
 	class UCameraComponent* Camera;
 
+	UPROPERTY(EditDefaultsOnly)
+	TSubclassOf<AGun_Base> StartingGunClass;
+	UPROPERTY()
+	AGun_Base* Gun;
+
+	void StartShootingGun();
+	void StopShootingGun();
+
+	void StartAiming();
+	void StopAiming();
+
+	void SwitchGun(EGunType GunType);
+	void SwitchToPreviousGun();
+	void ReloadRun();
 
 protected:
 	virtual void BeginPlay() override;
@@ -42,12 +57,6 @@ protected:
 
 public:	
 	APlayerCharacter();
-
-	void StartShootingGun();
-	void StopShootingGun();
-
-	void StartAiming();
-	void StopAiming();
 
 	virtual void Tick(float DeltaTime) override;
 
@@ -66,6 +75,4 @@ public:
 	/** Base look up/down rate, in deg/sec. Other scaling may affect final rate. */
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Camera)
 	float BaseLookUpRate;
-
-
 };
