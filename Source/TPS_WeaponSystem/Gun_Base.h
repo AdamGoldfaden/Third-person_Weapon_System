@@ -23,12 +23,16 @@ private:
 	UPROPERTY(VisibleAnywhere)
 	USkeletalMeshComponent* Mesh;
 
+	//UPROPERTY(EditAnywhere)
 	EGunType GunType;
-	float MaxRange = 1000.f;
 
 protected:
+	UPROPERTY(EditAnywhere)
+	float MaxRange = 1000.f;
+
 	virtual void BeginPlay() override;
 	virtual bool GunTrace(FHitResult& OutHit);
+	virtual FVector GetTraceDirection(FVector StartLocation, FHitResult HitResult);
 
 public:	
 	AGun_Base();
@@ -39,4 +43,5 @@ public:
 
 	AController* GetOwnerController() const;
 	EGunType GetGunType() const;
-};
+	USkeletalMeshComponent* GetGunMesh() const;
+}; 

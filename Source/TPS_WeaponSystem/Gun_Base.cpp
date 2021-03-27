@@ -57,6 +57,11 @@ bool AGun_Base::GunTrace(FHitResult& OutHit)
 	return GetWorld()->LineTraceSingleByChannel(OutHit, BulletStartLocation, BulletEndLocation, ECC_GameTraceChannel1, Params);
 }
 
+FVector AGun_Base::GetTraceDirection(FVector StartLocation, FHitResult HitResult)
+{
+	return (HitResult.Location - StartLocation).GetSafeNormal();
+}
+
 AController* AGun_Base::GetOwnerController() const
 {
 	APawn* OwnerPawn = Cast<APawn>(GetOwner());
@@ -70,5 +75,10 @@ AController* AGun_Base::GetOwnerController() const
 EGunType AGun_Base::GetGunType() const
 {
 	return GunType;
+}
+
+USkeletalMeshComponent* AGun_Base::GetGunMesh() const
+{
+	return Mesh;
 }
 

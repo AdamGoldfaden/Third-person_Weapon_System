@@ -7,9 +7,16 @@
 ATPS_WeaponSystemGameMode::ATPS_WeaponSystemGameMode()
 {
 	// set default pawn class to our Blueprinted character
-	static ConstructorHelpers::FClassFinder<APawn> PlayerPawnBPClass(TEXT("/Game/Blueprints/BP_PlayerCharacter"));
+	static ConstructorHelpers::FClassFinder<APawn> PlayerPawnBPClass(TEXT("/Game/Blueprints/Characters/BP_PlayerCharacter"));
 	if (PlayerPawnBPClass.Class != NULL)
 	{
 		DefaultPawnClass = PlayerPawnBPClass.Class;
+	}
+
+	static ConstructorHelpers::FClassFinder<APlayerController> PlayerControllerBPClass(
+		TEXT("/Game/Blueprints/Characters/BP_PlayerCharacter"));
+	if (PlayerControllerBPClass.Class != NULL)
+	{
+		PlayerControllerClass = PlayerControllerBPClass.Class;
 	}
 }
