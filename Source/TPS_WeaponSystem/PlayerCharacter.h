@@ -6,6 +6,8 @@
 
 class AGun_Base;
 enum EGunType;
+class USpringArmComponent;
+class UCameraComponent;
 
 UCLASS()
 class TPS_WEAPONSYSTEM_API APlayerCharacter : public ACharacter
@@ -21,13 +23,13 @@ private:
 	float AimingSpeed = 10.f;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Camera, meta = (AllowPrivateAccess = "true"))
-	class USpringArmComponent* SpringArm;
+	USpringArmComponent* SpringArm;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Camera, meta = (AllowPrivateAccess = "true"))
-	class USpringArmComponent* AimingSpringArm;
+	USpringArmComponent* AimingSpringArm;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Camera, meta = (AllowPrivateAccess = "true"))
-	class UCameraComponent* Camera;
+	UCameraComponent* Camera;
 
 	UPROPERTY(EditDefaultsOnly)
 	TSubclassOf<AGun_Base> StartingGunClass;

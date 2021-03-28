@@ -14,7 +14,7 @@ ATPS_WeaponSystemGameMode::ATPS_WeaponSystemGameMode()
 	}
 
 	static ConstructorHelpers::FClassFinder<APlayerController> PlayerControllerBPClass(
-		TEXT("/Game/Blueprints/Characters/BP_PlayerCharacter"));
+		TEXT("/Game/Blueprints/BP_TPSPlayerController"));
 	if (PlayerControllerBPClass.Class != NULL)
 	{
 		PlayerControllerClass = PlayerControllerBPClass.Class;
