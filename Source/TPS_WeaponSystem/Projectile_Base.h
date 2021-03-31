@@ -12,6 +12,8 @@ class TPS_WEAPONSYSTEM_API AProjectile_Base : public AActor
 	GENERATED_BODY()
 
 private:
+	FVector InitialVelocity;
+
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, meta = (AllowPrivateAccess = "true"))
 	UProjectileMovementComponent* ProjectileMovement;
 
@@ -19,10 +21,13 @@ private:
 	UStaticMeshComponent* ProjectileMesh;
 
 protected:
+	virtual void BeginPlay() override;
+
 	UFUNCTION()
 	virtual void OnHit(UPrimitiveComponent* HitComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, FVector NormalImpulse,
 		const FHitResult& Hit) {}
 
 public:	
 	AProjectile_Base();
+	virtual void Tick(float DeltaTime);
 };

@@ -15,8 +15,9 @@ void AGun_Raycast::StartShooting()
 	if (GunTrace(OutHit))
 	{
 		FVector StartLocation = GetGunMesh()->GetSocketLocation(TEXT("MuzzleSocket"));
-		FVector Direction = GetTraceDirection(OutHit);
-		FVector EndLocation = StartLocation + MaxRange * Direction;
+		FVector Direction = GetDirectionFromStartToHit(StartLocation, OutHit);
+		FVector EndLocation = StartLocation + (MaxRange * Direction) + GetOwner()->GetVelocity();
 		DrawDebugPoint(GetWorld(), OutHit.Location, 10.f, FColor::Red, false, 0.25f);
+		//DrawDebugLine(GetWorld(), StartLocation, EndLocation, FColor::Red, false, 0.1f);
 	}
 }

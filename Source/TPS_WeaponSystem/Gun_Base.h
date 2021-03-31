@@ -31,7 +31,7 @@ protected:
 	float MaxRange = 10000.f;
 
 	virtual bool GunTrace(FHitResult& OutHit);
-	virtual FVector GetTraceDirection(FHitResult HitResult) const;
+	virtual FVector GetDirectionFromStartToHit(FVector StartLocation, FHitResult HitResult) const;
 
 public:	
 	AGun_Base();

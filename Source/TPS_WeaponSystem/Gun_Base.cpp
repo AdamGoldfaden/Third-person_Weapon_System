@@ -32,9 +32,10 @@ bool AGun_Base::GunTrace(FHitResult& OutHit)
 	return GetWorld()->LineTraceSingleByChannel(OutHit, BulletStartLocation, BulletEndLocation, ECC_GameTraceChannel1, Params);
 }
 
-FVector AGun_Base::GetTraceDirection(FHitResult HitResult) const
+FVector AGun_Base::GetDirectionFromStartToHit(FVector StartLocation, FHitResult HitResult) const
 {
-	return (HitResult.Location - GetGunMesh()->GetSocketLocation("WeaponSocket")).GetSafeNormal();
+	FVector TraceDirection = (HitResult.Location - StartLocation).GetSafeNormal();
+	return TraceDirection;
 }
 
 AController* AGun_Base::GetOwnerController() const

@@ -11,6 +11,18 @@ AProjectile_Base::AProjectile_Base()
 	RootComponent = ProjectileMesh;
 
 	ProjectileMovement = CreateDefaultSubobject<UProjectileMovementComponent>(TEXT("Projectile Movement"));
-
 	InitialLifeSpan = 3.0f;
+}
+
+void AProjectile_Base::BeginPlay()
+{
+	Super::BeginPlay();
+	InitialVelocity = GetTransform().InverseTransformVector(ProjectileMovement->Velocity);
+}
+
+void AProjectile_Base::Tick(float DeltaTime)
+{
+	Super::Tick(DeltaTime);
+	FVector NewProjectileLocalVelocity = InitialVelocity + GetTransform().InverseTransformVector(GetOwner()->GetOwner()->GetVelocity());
+	ProjectileMovement->Velocity = GetTransform().TransformVector(NewProjectileLocalVelocity);
 }
