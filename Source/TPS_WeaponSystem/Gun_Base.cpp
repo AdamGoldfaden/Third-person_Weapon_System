@@ -11,31 +11,6 @@ AGun_Base::AGun_Base()
 	Mesh->SetupAttachment(Root);
 }
 
-void AGun_Base::BeginPlay()
-{
-	Super::BeginPlay();
-}
-
-void AGun_Base::Tick(float DeltaTime)
-{
-	Super::Tick(DeltaTime);
-
-}
-
-void AGun_Base::StartShooting()
-{
-
-}
-void AGun_Base::StopShooting()
-{
-
-}
-
-void AGun_Base::Reload()
-{
-
-}
-
 bool AGun_Base::GunTrace(FHitResult& OutHit)
 {
 	AController* OwnerController = GetOwnerController();
@@ -57,7 +32,7 @@ bool AGun_Base::GunTrace(FHitResult& OutHit)
 	return GetWorld()->LineTraceSingleByChannel(OutHit, BulletStartLocation, BulletEndLocation, ECC_GameTraceChannel1, Params);
 }
 
-FVector AGun_Base::GetTraceDirection(FHitResult HitResult)
+FVector AGun_Base::GetTraceDirection(FHitResult HitResult) const
 {
 	return (HitResult.Location - GetGunMesh()->GetSocketLocation("WeaponSocket")).GetSafeNormal();
 }
@@ -71,14 +46,3 @@ AController* AGun_Base::GetOwnerController() const
 
 	return OwnerPawn->GetController();
 }
-
-EGunType AGun_Base::GetGunType() const
-{
-	return GunType;
-}
-
-USkeletalMeshComponent* AGun_Base::GetGunMesh() const
-{
-	return Mesh;
-}
-

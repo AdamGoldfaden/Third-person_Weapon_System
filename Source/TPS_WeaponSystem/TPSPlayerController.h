@@ -12,7 +12,7 @@ class TPS_WEAPONSYSTEM_API ATPSPlayerController : public APlayerController
 	GENERATED_BODY()
 
 private:
-	UPROPERTY(EditAnywhere)
+	UPROPERTY(EditDefaultsOnly)
 	TSubclassOf<UUserWidget> HUDClass;
 
 	UPROPERTY()

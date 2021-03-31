@@ -10,5 +10,6 @@ class TPS_WEAPONSYSTEM_API AGun_Raycast : public AGun_Base
 	GENERATED_BODY()
 
 public:
+	virtual void Tick(float DeltaTime) override;
 	virtual void StartShooting() override;
 };

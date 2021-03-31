@@ -13,8 +13,8 @@ void AGun_Projectile::StartShooting()
 	FHitResult OutHit;
 	if (GunTrace(OutHit))
 	{
-		FVector ProjectileSpawnLocation = ProjectileSpawnPoint->GetComponentLocation();
-		FRotator ProjectileSpawnRotation = GetTraceDirection(OutHit).Rotation();
+		const FVector& ProjectileSpawnLocation = ProjectileSpawnPoint->GetComponentLocation();
+		const FRotator& ProjectileSpawnRotation = GetTraceDirection(OutHit).Rotation();
 		AProjectile_Base* Projectile = GetWorld()->SpawnActor<AProjectile_Base>(ProjectileClass, ProjectileSpawnLocation, 
 			ProjectileSpawnRotation);
 		Projectile->SetOwner(this);

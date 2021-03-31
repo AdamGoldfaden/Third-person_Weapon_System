@@ -17,31 +17,29 @@ class TPS_WEAPONSYSTEM_API AGun_Base : public AActor
 	GENERATED_BODY()
 	
 private:
-	UPROPERTY(VisibleAnywhere)
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, meta = (AllowPrivateAccess = "true"))
 	USceneComponent* Root;
 
-	UPROPERTY(VisibleAnywhere)
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, meta = (AllowPrivateAccess = "true"))
 	USkeletalMeshComponent* Mesh;
 
-	//UPROPERTY(EditAnywhere)
-	EGunType GunType;
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, meta = (AllowPrivateAccess = "true"))
+	TEnumAsByte<EGunType> GunType;
 
 protected:
-	UPROPERTY(EditAnywhere)
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, meta = (AllowPrivateAccess = "true"))
 	float MaxRange = 10000.f;
 
-	virtual void BeginPlay() override;
 	virtual bool GunTrace(FHitResult& OutHit);
-	virtual FVector GetTraceDirection(FHitResult HitResult);
+	virtual FVector GetTraceDirection(FHitResult HitResult) const;
 
 public:	
 	AGun_Base();
-	virtual void Tick(float DeltaTime) override;
-	virtual void StartShooting();
-	virtual void StopShooting();
-	virtual void Reload();
+	virtual void StartShooting(){}
+	virtual void StopShooting(){}
+	virtual void Reload(){}
 
 	AController* GetOwnerController() const;
-	EGunType GetGunType() const;
-	USkeletalMeshComponent* GetGunMesh() const;
+	FORCEINLINE EGunType GetGunType() const { return GunType; };
+	FORCEINLINE USkeletalMeshComponent* GetGunMesh() const { return Mesh; };
 }; 

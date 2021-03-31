@@ -1,5 +1,3 @@
-// Copyright Epic Games, Inc. All Rights Reserved.
-
 #pragma once
 
 #include "CoreMinimal.h"
@@ -12,7 +10,7 @@ class ATPS_WeaponSystemGameMode : public AGameModeBase
 	GENERATED_BODY()
 
 public:
-	ATPS_WeaponSystemGameMode();
+	ATPS_WeaponSystemGameMode() {}
 };
 
 
