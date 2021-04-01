@@ -30,6 +30,9 @@ void APlayerCharacter::BeginPlay()
 {
 	Super::BeginPlay();
 
+	SpringArmStartZ = SpringArm->GetRelativeLocation().Z;
+	AimingSpringArmStartZ = AimingSpringArm->GetRelativeLocation().Z;
+
 	Gun = GetWorld()->SpawnActor<AGun_Base>(StartingGunClass);
 	Gun->AttachToComponent(GetMesh(), FAttachmentTransformRules::KeepRelativeTransform, TEXT("WeaponSocket"));
 	Gun->SetOwner(this);
@@ -78,6 +81,23 @@ void APlayerCharacter::Tick(float DeltaTime)
 	Super::Tick(DeltaTime);
 
 	Camera->SetRelativeLocation(FMath::VInterpTo(Camera->GetRelativeLocation(), FVector(0.f,0.f,0.f), DeltaTime, AimingSpeed));
+
+	if (bIsCrouched)
+	{
+		float SpringArmZ = FMath::FInterpTo(SpringArm->GetRelativeLocation().Z, SpringArmCrouchZ, DeltaTime, CrouchSpeed);
+		float AimingSpringArmZ = FMath::FInterpTo(AimingSpringArm->GetRelativeLocation().Z, AimingSpringArmCrouchZ, 
+			DeltaTime, CrouchSpeed);
+		SpringArm->SetRelativeLocation(FVector(0, 0, SpringArmZ));
+		AimingSpringArm->SetRelativeLocation(FVector(0, 0, AimingSpringArmZ));
+	}
+	else
+	{
+		float SpringArmZ = FMath::FInterpTo(SpringArm->GetRelativeLocation().Z, SpringArmStartZ, DeltaTime, CrouchSpeed);
+		float AimingSpringArmZ = FMath::FInterpTo(AimingSpringArm->GetRelativeLocation().Z, AimingSpringArmStartZ, 
+			DeltaTime, CrouchSpeed);
+		SpringArm->SetRelativeLocation(FVector(0, 0, SpringArmZ));
+		AimingSpringArm->SetRelativeLocation(FVector(0, 0, AimingSpringArmZ));
+	}
 }
 
 
@@ -96,6 +116,8 @@ void APlayerCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCom
 	PlayerInputComponent->BindAction("Aim", IE_Released, this, &APlayerCharacter::StopAiming);
 	PlayerInputComponent->BindAction("Reload", IE_Pressed, this, &APlayerCharacter::ReloadRun);
 	PlayerInputComponent->BindAction("SwitchToPreviousGun", IE_Pressed, this, &APlayerCharacter::SwitchToPreviousGun);
+	PlayerInputComponent->BindAction("Crouch", IE_Pressed, this, &APlayerCharacter::StartCrouch);
+	PlayerInputComponent->BindAction("Crouch", IE_Released, this, &APlayerCharacter::StartUnCrouch);
 
 	//Axis mappings
 	PlayerInputComponent->BindAxis("MoveForward", this, &APlayerCharacter::MoveForward);
@@ -137,5 +159,21 @@ void APlayerCharacter::MoveRight(float Value)
 
 		FVector Direction = FRotationMatrix(YawRotation).GetUnitAxis(EAxis::Y);
 		AddMovementInput(Direction, Value);
+	}
+}
+
+void APlayerCharacter::StartCrouch()
+{
+	if (GetCharacterMovement()->IsMovingOnGround())
+	{
+		Crouch();
+	}
+}
+
+void APlayerCharacter::StartUnCrouch()
+{
+	if (GetCharacterMovement()->IsMovingOnGround())
+	{
+		UnCrouch();
 	}
 }

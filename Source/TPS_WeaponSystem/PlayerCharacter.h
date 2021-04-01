@@ -17,6 +17,8 @@ class TPS_WEAPONSYSTEM_API APlayerCharacter : public ACharacter
 private:
 	float CapsuleWidth = 42.0f;
 	float CapsuleHeight = 96.0f;
+	float SpringArmStartZ;
+	float AimingSpringArmStartZ;
 
 	bool bIsAiming = false;
 	EGunType PreviousGunType;
@@ -30,6 +32,13 @@ private:
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
 	float AimingSpeed = 10.f;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
+	float SpringArmCrouchZ = 30.f;
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
+	float AimingSpringArmCrouchZ = 30.f;
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
+	float CrouchSpeed = 0.5f;
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, meta = (AllowPrivateAccess = "true"))
 	TSubclassOf<AGun_Base> StartingGunClass;
@@ -51,6 +60,9 @@ private:
 
 	void StartAiming();
 	void StopAiming();
+
+	void StartCrouch();
+	void StartUnCrouch();
 
 	void SwitchGun(EGunType GunType);
 	void SwitchToPreviousGun();

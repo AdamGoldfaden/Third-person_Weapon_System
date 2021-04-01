@@ -23,5 +23,6 @@ void AGun_Projectile::StartShooting()
 			ProjectileSpawnRotation
 		);
 		Projectile->SetOwner(this);
+		Projectile->AdjustVelocity();
 	}
 }

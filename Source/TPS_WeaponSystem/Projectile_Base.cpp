@@ -23,6 +23,12 @@ void AProjectile_Base::BeginPlay()
 void AProjectile_Base::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
+	AdjustVelocity();
+}
+	
+
+void AProjectile_Base::AdjustVelocity()
+{
 	FVector NewProjectileLocalVelocity = InitialVelocity + GetTransform().InverseTransformVector(GetOwner()->GetOwner()->GetVelocity());
 	ProjectileMovement->Velocity = GetTransform().TransformVector(NewProjectileLocalVelocity);
 }

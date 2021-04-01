@@ -30,4 +30,5 @@ protected:
 public:	
 	AProjectile_Base();
 	virtual void Tick(float DeltaTime);
+	void AdjustVelocity();
 };
