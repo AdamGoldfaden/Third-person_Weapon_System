@@ -31,6 +31,9 @@ protected:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, meta = (AllowPrivateAccess = "true"))
 	float MaxRange = 10000.f;
 
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, meta = (AllowPrivateAccess = "true"))
+	float AccuracyRadius = 1.f;
+
 	virtual bool GunTrace(FHitResult& OutHit);
 	virtual FVector GetDirectionFromStartToHit(FVector StartLocation, FHitResult HitResult) const;
 

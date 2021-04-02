@@ -23,6 +23,16 @@ bool AGun_Base::GunTrace(FHitResult& OutHit)
 	FRotator BulletRotation;
 
 	OwnerController->GetPlayerViewPoint(BulletStartLocation, BulletRotation);
+	
+	float AdjustedRadius = FMath::FRandRange(0.f, AccuracyRadius);
+	float AdjustedPitch = FMath::FRandRange(-AdjustedRadius, AdjustedRadius);
+	float AdjustedYaw = FMath::Sqrt(FMath::Pow(AdjustedRadius, 2) - FMath::Pow(AdjustedPitch, 2));
+	if (FMath::RandBool())
+	{
+		AdjustedYaw = -AdjustedYaw;
+	}
+
+	BulletRotation.Add(AdjustedPitch, AdjustedYaw, 0);
 	FVector BulletEndLocation = BulletStartLocation + MaxRange * BulletRotation.Vector();
 
 	FCollisionQueryParams Params;
