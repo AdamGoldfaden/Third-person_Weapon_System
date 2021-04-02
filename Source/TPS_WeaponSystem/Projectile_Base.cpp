@@ -29,6 +29,9 @@ void AProjectile_Base::Tick(float DeltaTime)
 
 void AProjectile_Base::AdjustVelocity()
 {
-	FVector NewProjectileLocalVelocity = InitialVelocity + GetTransform().InverseTransformVector(GetOwner()->GetOwner()->GetVelocity());
+	AActor* ActorThatShotProjectile = GetOwner()->GetOwner();
+	if (!ActorThatShotProjectile) { return; }
+
+	FVector NewProjectileLocalVelocity = InitialVelocity + GetTransform().InverseTransformVector(ActorThatShotProjectile->GetVelocity());
 	ProjectileMovement->Velocity = GetTransform().TransformVector(NewProjectileLocalVelocity);
 }

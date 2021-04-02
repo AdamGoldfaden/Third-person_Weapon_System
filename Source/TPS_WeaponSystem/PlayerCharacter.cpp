@@ -36,6 +36,9 @@ void APlayerCharacter::BeginPlay()
 	Gun = GetWorld()->SpawnActor<AGun_Base>(StartingGunClass);
 	Gun->AttachToComponent(GetMesh(), FAttachmentTransformRules::KeepRelativeTransform, TEXT("WeaponSocket"));
 	Gun->SetOwner(this);
+
+	CurrentGunType = Gun->GetGunType();
+	PreviousGunType = CurrentGunType;
 }
 
 void APlayerCharacter::StartShootingGun()
@@ -60,15 +63,25 @@ void APlayerCharacter::StopAiming()
 	Camera->AttachToComponent(SpringArm, FAttachmentTransformRules::KeepWorldTransform, USpringArmComponent::SocketName);
 }
 
-void APlayerCharacter::SwitchGun(EGunType GunType)
+void APlayerCharacter::SwitchGun(uint8 GunClassIndex)
 {
+	if (GunClassIndex == CurrentGunType) { return; }
+
 	PreviousGunType = CurrentGunType;
-	CurrentGunType = GunType;
+
+	AGun_Base* TempGun = Gun;
+	Gun = nullptr;
+	TempGun->Destroy();
+
+	Gun = GetWorld()->SpawnActor<AGun_Base>(GunClasses[GunClassIndex]);
+	Gun->AttachToComponent(GetMesh(), FAttachmentTransformRules::KeepRelativeTransform, TEXT("WeaponSocket"));
+	Gun->SetOwner(this);
+	CurrentGunType = Gun->GetGunType();
 }
 
 void APlayerCharacter::SwitchToPreviousGun()
 {
-	CurrentGunType = PreviousGunType;
+	SwitchGun(PreviousGunType);
 }
 
 void APlayerCharacter::ReloadRun()
@@ -118,6 +131,8 @@ void APlayerCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCom
 	PlayerInputComponent->BindAction("SwitchToPreviousGun", IE_Pressed, this, &APlayerCharacter::SwitchToPreviousGun);
 	PlayerInputComponent->BindAction("Crouch", IE_Pressed, this, &APlayerCharacter::StartCrouch);
 	PlayerInputComponent->BindAction("Crouch", IE_Released, this, &APlayerCharacter::StartUnCrouch);
+	PlayerInputComponent->BindAction("SwitchToGun1", IE_Pressed, this, &APlayerCharacter::SwitchToGun1);
+	PlayerInputComponent->BindAction("SwitchToGun2", IE_Pressed, this, &APlayerCharacter::SwitchToGun2);
 
 	//Axis mappings
 	PlayerInputComponent->BindAxis("MoveForward", this, &APlayerCharacter::MoveForward);
@@ -176,4 +191,14 @@ void APlayerCharacter::StartUnCrouch()
 	{
 		UnCrouch();
 	}
+}
+
+void APlayerCharacter::SwitchToGun1()
+{
+	SwitchGun(0);
+}
+
+void APlayerCharacter::SwitchToGun2()
+{
+	SwitchGun(1);
 }

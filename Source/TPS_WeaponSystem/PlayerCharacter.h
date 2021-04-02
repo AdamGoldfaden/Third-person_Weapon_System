@@ -26,10 +26,8 @@ private:
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
 	float BaseTurnRate = 45.f;
-
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
 	float BaseLookUpRate = 45.f;
-
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
 	float AimingSpeed = 10.f;
 
@@ -38,22 +36,22 @@ private:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
 	float AimingSpringArmCrouchZ = 30.f;
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
-	float CrouchSpeed = 0.5f;
-
-	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, meta = (AllowPrivateAccess = "true"))
-	TSubclassOf<AGun_Base> StartingGunClass;
+	float CrouchSpeed = 5.f;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, meta = (AllowPrivateAccess = "true"))
 	USpringArmComponent* SpringArm;
-
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, meta = (AllowPrivateAccess = "true"))
 	USpringArmComponent* AimingSpringArm;
-
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, meta = (AllowPrivateAccess = "true"))
 	UCameraComponent* Camera;
 
 	UPROPERTY()
 	AGun_Base* Gun;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, meta = (AllowPrivateAccess = "true"))
+	TSubclassOf<AGun_Base> StartingGunClass;
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, meta = (AllowPrivateAccess = "true"))
+	TArray<TSubclassOf<AGun_Base>> GunClasses;
 
 	void StartShootingGun();
 	void StopShootingGun();
@@ -64,9 +62,12 @@ private:
 	void StartCrouch();
 	void StartUnCrouch();
 
-	void SwitchGun(EGunType GunType);
+	void SwitchGun(uint8 GunClassIndex);
 	void SwitchToPreviousGun();
 	void ReloadRun();
+
+	void SwitchToGun1();
+	void SwitchToGun2();
 
 protected:
 	virtual void BeginPlay() override;
