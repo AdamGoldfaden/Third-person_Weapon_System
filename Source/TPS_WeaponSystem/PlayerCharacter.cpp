@@ -44,11 +44,13 @@ void APlayerCharacter::BeginPlay()
 void APlayerCharacter::StartShootingGun()
 {
 	Gun->StartShooting();
+	bIsFiring = true;
 }
 
 void APlayerCharacter::StopShootingGun()
 {
 	Gun->StopShooting();
+	bIsFiring = false;
 }
 
 void APlayerCharacter::StartAiming()

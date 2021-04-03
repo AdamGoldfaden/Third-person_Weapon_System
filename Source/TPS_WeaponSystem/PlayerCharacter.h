@@ -21,6 +21,8 @@ private:
 	float AimingSpringArmStartZ;
 
 	bool bIsAiming = false;
+	bool bIsFiring = false;
+
 	EGunType PreviousGunType;
 	EGunType CurrentGunType;
 
@@ -92,4 +94,6 @@ public:
 
 	UFUNCTION(BlueprintPure)
 	bool GetIsAiming() const { return bIsAiming; }
+	UFUNCTION(BlueprintPure)
+	bool GetIsFiring() const { return bIsFiring; }
 };
