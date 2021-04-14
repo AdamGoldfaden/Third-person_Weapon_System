@@ -1,4 +1,5 @@
 #include "Gun_Base.h"
+#include "PlayerCharacter.h"
 
 AGun_Base::AGun_Base()
 {
@@ -23,8 +24,28 @@ bool AGun_Base::GunTrace(FHitResult& OutHit)
 	FRotator BulletRotation;
 
 	OwnerController->GetPlayerViewPoint(BulletStartLocation, BulletRotation);
-	
+
 	float AdjustedRadius = FMath::FRandRange(0.f, AccuracyRadius);
+
+	APlayerCharacter* OwningPlayer = Cast<APlayerCharacter>(OwnerController->GetPawn());
+	if (OwningPlayer == nullptr)
+	{
+		return false;
+	}
+
+	if (OwningPlayer->bIsCrouched)
+	{
+		AdjustedRadius *= CrouchMultiplier;
+	}
+	if (OwningPlayer->GetIsAiming())
+	{
+		AdjustedRadius *= AimingMultiplier;
+	}
+	if (OwningPlayer->GetVelocity().SizeSquared() > 0.f)
+	{
+		AdjustedRadius *= MovingMultiplier;
+	}
+
 	float AdjustedPitch = FMath::FRandRange(-AdjustedRadius, AdjustedRadius);
 	float AdjustedYaw = FMath::Sqrt(FMath::Pow(AdjustedRadius, 2) - FMath::Pow(AdjustedPitch, 2));
 	if (FMath::RandBool())

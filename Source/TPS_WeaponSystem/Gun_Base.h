@@ -38,6 +38,13 @@ protected:
 	virtual FVector GetDirectionFromStartToHit(FVector StartLocation, FHitResult HitResult) const;
 
 public:	
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, meta = (AllowPrivateAccess = "true"))
+	float CrouchMultiplier = 0.5f;
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, meta = (AllowPrivateAccess = "true"))
+	float AimingMultiplier = 0.5f;
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, meta = (AllowPrivateAccess = "true"))
+	float MovingMultiplier = 2.f;
+
 	AGun_Base();
 	virtual void StartShooting(){}
 	virtual void StopShooting(){}
@@ -46,4 +53,5 @@ public:
 	AController* GetOwnerController() const;
 	FORCEINLINE EGunType GetGunType() const { return GunType; };
 	FORCEINLINE USkeletalMeshComponent* GetGunMesh() const { return Mesh; };
+	FORCEINLINE float GetAccuracy() const { return AccuracyRadius; };
 }; 

@@ -9,7 +9,7 @@ class USpringArmComponent;
 class UCameraComponent;
 enum EGunType;
 
-UCLASS()
+UCLASS(HideCategories = (Replication))
 class TPS_WEAPONSYSTEM_API APlayerCharacter : public ACharacter
 {
 	GENERATED_BODY()
@@ -26,18 +26,18 @@ private:
 	EGunType PreviousGunType;
 	EGunType CurrentGunType;
 
-	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "APlayerCharacter|Aiming", meta = (AllowPrivateAccess = "true"))
 	float BaseTurnRate = 45.f;
-	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "APlayerCharacter|Aiming", meta = (AllowPrivateAccess = "true"))
 	float BaseLookUpRate = 45.f;
-	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "APlayerCharacter|Aiming", meta = (AllowPrivateAccess = "true"))
 	float AimingSpeed = 10.f;
 
-	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "APlayerCharacter|Crouch", meta = (AllowPrivateAccess = "true"))
 	float SpringArmCrouchZ = 30.f;
-	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "APlayerCharacter|Crouch", meta = (AllowPrivateAccess = "true"))
 	float AimingSpringArmCrouchZ = 30.f;
-	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "APlayerCharacter|Crouch", meta = (AllowPrivateAccess = "true"))
 	float CrouchSpeed = 5.f;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, meta = (AllowPrivateAccess = "true"))
@@ -91,6 +91,7 @@ public:
 	
 	FORCEINLINE USpringArmComponent* GetSpringArm() const { return SpringArm; }
 	FORCEINLINE UCameraComponent* GetCamera() const { return Camera; }
+	FORCEINLINE AGun_Base* GetGun() const { return Gun; }
 
 	UFUNCTION(BlueprintPure)
 	bool GetIsAiming() const { return bIsAiming; }
