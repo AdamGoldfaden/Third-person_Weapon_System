@@ -26,13 +26,14 @@ private:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, meta = (AllowPrivateAccess = "true"))
 	TEnumAsByte<EGunType> GunType;
 
-	
 protected:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, meta = (AllowPrivateAccess = "true"))
 	float MaxRange = 10000.f;
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, meta = (AllowPrivateAccess = "true"))
 	float AccuracyRadius = 1.f;
+
+	bool bIsShooting = false;
 
 	virtual bool GunTrace(FHitResult& OutHit);
 	virtual FVector GetDirectionFromStartToHit(FVector StartLocation, FHitResult HitResult) const;
@@ -46,8 +47,8 @@ public:
 	float MovingMultiplier = 2.f;
 
 	AGun_Base();
-	virtual void StartShooting(){}
-	virtual void StopShooting(){}
+	virtual void StartShooting() { bIsShooting = true; }
+	virtual void StopShooting() { bIsShooting = false; }
 	virtual void Reload(){}
 
 	AController* GetOwnerController() const;
