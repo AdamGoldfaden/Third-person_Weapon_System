@@ -19,7 +19,7 @@ void AGun_Raycast::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
-	if (bIsShooting)
+	if (bIsShooting && !bIsReloading)
 	{
 		//Add Recoil
 		FRotator CurrentControllerRotation = GetOwnerController()->GetControlRotation();
@@ -31,6 +31,16 @@ void AGun_Raycast::Tick(float DeltaTime)
 
 void AGun_Raycast::FireBullet()
 {
+	if (bIsReloading)
+	{
+		return;
+	}
+	else if (CurrentAmmo <= 0)
+	{
+		Reload();
+		return;
+	}
+	
 	FHitResult OutHit;
 	if (GunTrace(OutHit))
 	{
@@ -40,7 +50,7 @@ void AGun_Raycast::FireBullet()
 
 		DrawDebugPoint(GetWorld(), OutHit.Location, 5.f, FColor::Red, false, 0.25f);
 		DrawDebugLine(GetWorld(), StartLocation, OutHit.Location, FColor::Red, false, 0.2f);
-		
+
+		CurrentAmmo--;
 	}
 }
-

@@ -14,13 +14,13 @@ private:
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Gun_Raycast|FireRate", meta = (AllowPrivateAccess = "true"))
 	float TimeBetweenShots = 0.1f;
+
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Gun_Raycast|Recoil", meta = (AllowPrivateAccess = "true"))
 	float VerticalRecoilAmount = 0.15f;
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Gun_Raycast|Recoil", meta = (AllowPrivateAccess = "true"))
 	float HorizontalRecoilAmount = 0.02f;;
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Gun_Raycast|Recoil",  meta = (AllowPrivateAccess = "true"))
 	float RecoilSpeed = 0.1f;
-
 
 	void FireBullet();
 

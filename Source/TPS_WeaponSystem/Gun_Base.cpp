@@ -12,6 +12,13 @@ AGun_Base::AGun_Base()
 	Mesh->SetupAttachment(Root);
 }
 
+void AGun_Base::BeginPlay()
+{
+	Super::BeginPlay();
+
+	CurrentAmmo = MaxAmmo;
+}
+
 bool AGun_Base::GunTrace(FHitResult& OutHit)
 {
 	AController* OwnerController = GetOwnerController();
@@ -77,4 +84,29 @@ AController* AGun_Base::GetOwnerController() const
 	}
 
 	return OwnerPawn->GetController();
+}
+
+void AGun_Base::StartShooting() 
+{ 
+	if (bIsReloading)
+	{
+		return;
+	}
+	bIsShooting = true; 
+}
+void AGun_Base::StopShooting()
+{ 
+	bIsShooting = false; 
+}
+
+void AGun_Base::Reload() 
+{
+	bIsReloading = true;
+	GetWorld()->GetTimerManager().SetTimer(ReloadTimerHandle, this, &AGun_Base::StopReloading, ReloadTime, false);
+}
+
+void AGun_Base::StopReloading()
+{
+	CurrentAmmo = MaxAmmo;
+	bIsReloading = false;
 }
