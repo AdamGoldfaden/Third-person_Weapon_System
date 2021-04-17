@@ -12,6 +12,10 @@ class TPS_WEAPONSYSTEM_API AProjectile_Base : public AActor
 	GENERATED_BODY()
 
 private:
+	UPROPERTY(EditDefaultsOnly, Category = "Projectile_Base|ProjectileParams", BlueprintReadOnly, meta = (AllowPrivateAccess = "true"))
+	bool bShouldFollowPlayerVelocity = false;
+
+protected:
 	FVector InitialVelocity;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, meta = (AllowPrivateAccess = "true"))
@@ -20,7 +24,6 @@ private:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, meta = (AllowPrivateAccess = "true"))
 	UStaticMeshComponent* ProjectileMesh;
 
-protected:
 	virtual void BeginPlay() override;
 
 	UFUNCTION()
@@ -31,4 +34,6 @@ public:
 	AProjectile_Base();
 	virtual void Tick(float DeltaTime) override;
 	void AdjustVelocity();
+
+	UProjectileMovementComponent* GetProjectileMovement() { return ProjectileMovement; }
 };

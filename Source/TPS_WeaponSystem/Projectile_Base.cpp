@@ -11,7 +11,6 @@ AProjectile_Base::AProjectile_Base()
 	RootComponent = ProjectileMesh;
 
 	ProjectileMovement = CreateDefaultSubobject<UProjectileMovementComponent>(TEXT("Projectile Movement"));
-	InitialLifeSpan = 3.0f;
 }
 
 void AProjectile_Base::BeginPlay()
@@ -23,10 +22,12 @@ void AProjectile_Base::BeginPlay()
 void AProjectile_Base::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
-	AdjustVelocity();
+	if (bShouldFollowPlayerVelocity)
+	{
+		AdjustVelocity();
+	}
 }
 	
-
 void AProjectile_Base::AdjustVelocity()
 {
 	AActor* ActorThatShotProjectile = GetOwner()->GetOwner();
