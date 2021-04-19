@@ -7,8 +7,8 @@
 UENUM(BlueprintType)
 enum EGunType
 {
-	Raycast UMETA(DisplayName, "Raycast"),
-	Projectile UMETA(DisplayName, "Projectile")
+	Auto UMETA(DisplayName, "AutoRifle"),
+	Cluster UMETA(DisplayName, "ClusterBomb")
 };
 
 UCLASS()
@@ -26,24 +26,27 @@ private:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Gun_Base|Gun Info", meta = (AllowPrivateAccess = "true"))
 	TEnumAsByte<EGunType> GunType;
 
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Gun_Base|Gun Info", meta = (AllowPrivateAccess = "true"))
+	UTexture2D* GunTypeImage;
+
 	FTimerHandle ReloadTimerHandle;
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Gun_Base|Ammo and Reloading", meta = (AllowPrivateAccess = "true"))
 	float ReloadTime = 1.f;
 
 
 protected:
+	bool bIsShooting = false;
+	bool bIsReloading = false;
+	uint8 CurrentAmmo = 0;
+
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Gun_Base|Gun Info", meta = (AllowPrivateAccess = "true"))
 	float MaxRange = 10000.f;
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Gun_Base|Accuracy", meta = (AllowPrivateAccess = "true"))
 	float AccuracyRadius = 1.f;
 
-	bool bIsShooting = false;
-	bool bIsReloading = false;
-
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Gun_Base|Ammo and Reloading", meta = (AllowPrivateAccess = "true"))
 	uint8 MaxAmmo = 10.f;
-	uint8 CurrentAmmo;
 
 	virtual void BeginPlay() override;
 	virtual bool GunTrace(FHitResult& OutHit);
@@ -65,6 +68,9 @@ public:
 
 	AController* GetOwnerController() const;
 	FORCEINLINE EGunType GetGunType() const { return GunType; };
+	FORCEINLINE UTexture2D* GetGunTypeImage() const { return GunTypeImage; };
 	FORCEINLINE USkeletalMeshComponent* GetGunMesh() const { return Mesh; };
 	FORCEINLINE float GetAccuracy() const { return AccuracyRadius; };
+	FORCEINLINE uint8 GetCurrentAmmo() const { return CurrentAmmo; };
+	FORCEINLINE uint8 GetMaxAmmo() const { return MaxAmmo; };
 }; 

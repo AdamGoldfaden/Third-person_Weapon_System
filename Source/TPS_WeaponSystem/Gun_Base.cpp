@@ -88,10 +88,6 @@ AController* AGun_Base::GetOwnerController() const
 
 void AGun_Base::StartShooting() 
 { 
-	if (bIsReloading)
-	{
-		return;
-	}
 	bIsShooting = true; 
 }
 void AGun_Base::StopShooting()

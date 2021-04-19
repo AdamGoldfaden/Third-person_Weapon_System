@@ -5,6 +5,7 @@
 void AGun_Raycast::StartShooting()
 {
 	Super::StartShooting();
+
 	FireBullet();
 	GetWorld()->GetTimerManager().SetTimer(FireRateTimerHandle, this, &AGun_Raycast::FireBullet, TimeBetweenShots, true);
 }
@@ -12,6 +13,7 @@ void AGun_Raycast::StartShooting()
 void AGun_Raycast::StopShooting()
 {
 	Super::StopShooting();
+
 	GetWorld()->GetTimerManager().ClearTimer(FireRateTimerHandle);
 }
 
@@ -35,11 +37,6 @@ void AGun_Raycast::FireBullet()
 	{
 		return;
 	}
-	else if (CurrentAmmo <= 0)
-	{
-		Reload();
-		return;
-	}
 	
 	FHitResult OutHit;
 	if (GunTrace(OutHit))
@@ -52,5 +49,9 @@ void AGun_Raycast::FireBullet()
 		DrawDebugLine(GetWorld(), StartLocation, OutHit.Location, FColor::Red, false, 0.2f);
 
 		CurrentAmmo--;
+		if (CurrentAmmo <= 0)
+		{
+			Reload();
+		}
 	}
 }

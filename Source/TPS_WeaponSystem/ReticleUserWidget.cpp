@@ -10,7 +10,6 @@ void UReticleUserWidget::NativeConstruct()
 	Super::NativeConstruct();
 
 	OwnerCharacter = Cast<APlayerCharacter>(GetOwningPlayerPawn());
-	
 }
 	
 
@@ -27,6 +26,7 @@ void UReticleUserWidget::NativeTick(const FGeometry& MyGeometry, float InDeltaTi
 	{
 		return;
 	}
+
 	AccuracyMultiplier = OwnerCharacterGun->GetAccuracy();
 	if (OwnerCharacter->bIsCrouched)
 	{

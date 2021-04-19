@@ -25,15 +25,14 @@ private:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, meta = (AllowPrivateAccess = "true"))
 	float AccuracyTranslation = 20.f;
 
-	void SetCrossHairPosition();
-
 	UPROPERTY()
 	APlayerCharacter* OwnerCharacter;
+
+	void SetCrossHairPosition();
 
 protected:
 	virtual void NativeConstruct() override;
 	virtual void NativeTick(const FGeometry& MyGeometry, float InDeltaTime) override;
-
 
 public:
 	float AccuracyMultiplier = 1.f;
