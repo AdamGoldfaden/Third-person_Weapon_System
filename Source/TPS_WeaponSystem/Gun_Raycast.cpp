@@ -39,19 +39,23 @@ void AGun_Raycast::FireBullet()
 	}
 	
 	FHitResult OutHit;
-	if (GunTrace(OutHit))
+	if (!GunTrace(OutHit))
 	{
-		FVector StartLocation = GetGunMesh()->GetSocketLocation(TEXT("MuzzleSocket"));
-		FVector Direction = GetDirectionFromStartToHit(StartLocation, OutHit);
-		FVector EndLocation = StartLocation + (MaxRange * Direction) + GetOwner()->GetVelocity();
+		return;
+	}
 
-		DrawDebugPoint(GetWorld(), OutHit.Location, 5.f, FColor::Red, false, 0.25f);
-		DrawDebugLine(GetWorld(), StartLocation, OutHit.Location, FColor::Red, false, 0.2f);
+	FVector StartLocation = GetGunMesh()->GetSocketLocation(TEXT("MuzzleSocket"));
+	FVector Direction = GetDirectionFromStartToHit(StartLocation, OutHit);
+	FVector EndLocation = StartLocation + (MaxRange * Direction) + GetOwner()->GetVelocity();
 
-		CurrentAmmo--;
-		if (CurrentAmmo <= 0)
-		{
-			Reload();
-		}
+	DrawDebugPoint(GetWorld(), OutHit.Location, 5.f, FColor::Red, false, 0.25f);
+	DrawDebugLine(GetWorld(), StartLocation, OutHit.Location, FColor::Red, false, 0.2f);
+
+	ApplyDamage(OutHit);
+
+	CurrentAmmo--;
+	if (CurrentAmmo <= 0)
+	{
+		Reload();
 	}
 }

@@ -97,6 +97,10 @@ void AGun_Base::StopShooting()
 
 void AGun_Base::Reload() 
 {
+	if (bIsReloading || CurrentAmmo == MaxAmmo)
+	{
+		return;
+	}
 	bIsReloading = true;
 	GetWorld()->GetTimerManager().SetTimer(ReloadTimerHandle, this, &AGun_Base::StopReloading, ReloadTime, false);
 }
@@ -105,4 +109,16 @@ void AGun_Base::StopReloading()
 {
 	CurrentAmmo = MaxAmmo;
 	bIsReloading = false;
+}
+
+void AGun_Base::ApplyDamage(const FHitResult& Hit)
+{
+	AActor* HitActor = Hit.GetActor();
+	if (HitActor == nullptr)
+	{
+		return;
+	}
+
+	FPointDamageEvent DamageEvent(Damage, Hit, Hit.Normal, nullptr);
+	Hit.Actor->TakeDamage(Damage, DamageEvent, GetOwnerController(), this);
 }

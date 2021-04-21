@@ -48,6 +48,9 @@ protected:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Gun_Base|Ammo and Reloading", meta = (AllowPrivateAccess = "true"))
 	uint8 MaxAmmo = 10.f;
 
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Gun_Base|Damage", meta = (AllowPrivateAccess = "true"))
+	float Damage = 10.f;
+
 	virtual void BeginPlay() override;
 	virtual bool GunTrace(FHitResult& OutHit);
 	virtual FVector GetDirectionFromStartToHit(FVector StartLocation, FHitResult HitResult) const;
@@ -65,6 +68,7 @@ public:
 	virtual void StopShooting();
 	virtual void Reload();
 	virtual void StopReloading();
+	virtual void ApplyDamage(const FHitResult& Hit);
 
 	AController* GetOwnerController() const;
 	FORCEINLINE EGunType GetGunType() const { return GunType; };

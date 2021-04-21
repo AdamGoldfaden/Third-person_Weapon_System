@@ -86,7 +86,7 @@ void APlayerCharacter::SwitchToPreviousGun()
 	SwitchGun(PreviousGunType);
 }
 
-void APlayerCharacter::ReloadRun()
+void APlayerCharacter::ReloadGun()
 {
 	Gun->Reload();
 }
@@ -129,7 +129,7 @@ void APlayerCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCom
 	PlayerInputComponent->BindAction("Shoot", IE_Released, this, &APlayerCharacter::StopShootingGun);
 	PlayerInputComponent->BindAction("Aim", IE_Pressed, this, &APlayerCharacter::StartAiming);
 	PlayerInputComponent->BindAction("Aim", IE_Released, this, &APlayerCharacter::StopAiming);
-	PlayerInputComponent->BindAction("Reload", IE_Pressed, this, &APlayerCharacter::ReloadRun);
+	PlayerInputComponent->BindAction("ReloadGun", IE_Pressed, this, &APlayerCharacter::ReloadGun);
 	PlayerInputComponent->BindAction("SwitchToPreviousGun", IE_Pressed, this, &APlayerCharacter::SwitchToPreviousGun);
 	PlayerInputComponent->BindAction("Crouch", IE_Pressed, this, &APlayerCharacter::StartCrouch);
 	PlayerInputComponent->BindAction("Crouch", IE_Released, this, &APlayerCharacter::StartUnCrouch);

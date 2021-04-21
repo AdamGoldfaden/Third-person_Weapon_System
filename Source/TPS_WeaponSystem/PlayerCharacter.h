@@ -66,7 +66,7 @@ private:
 
 	void SwitchGun(uint8 GunClassIndex);
 	void SwitchToPreviousGun();
-	void ReloadRun();
+	void ReloadGun();
 
 	void SwitchToGun1();
 	void SwitchToGun2();
