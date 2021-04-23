@@ -50,8 +50,14 @@ void AGun_Raycast::FireBullet()
 
 	DrawDebugPoint(GetWorld(), OutHit.Location, 5.f, FColor::Red, false, 0.25f);
 	DrawDebugLine(GetWorld(), StartLocation, OutHit.Location, FColor::Red, false, 0.2f);
-
+	
 	ApplyDamage(OutHit);
+
+	UStaticMeshComponent* MeshComponent = OutHit.GetActor()->FindComponentByClass<UStaticMeshComponent>();
+	if (MeshComponent && OutHit.GetActor()->IsRootComponentMovable())
+	{
+		MeshComponent->AddImpulseAtLocation(-OutHit.ImpactNormal * ImpulseForce, OutHit.Location);
+	}
 
 	CurrentAmmo--;
 	if (CurrentAmmo <= 0)

@@ -64,15 +64,21 @@ void AProjectile_Base::Explode()
 		HitActors
 	);
 
-	for (AActor* Actor : HitActors) {
+	for (AActor* Actor : HitActors) 
+	{
 
 		UE_LOG(LogTemp, Warning, TEXT("OverlappedActor: %s"), *Actor->GetName());
 		////float ScaledDamage = ExplosionDamage - (FVector::Distance(GetActorLocation(), Actor->GetActorLocation())/ExplosionRadius * ExplosionDamage);
 		//UE_LOG(LogTemp, Warning, TEXT("Scaled Damage: %f"), ScaledDamage);
 
 		FDamageEvent DamageEvent;
-
 		Actor->TakeDamage(ExplosionDamage, DamageEvent, nullptr, this);
+
+		UMeshComponent* MeshComponent = Actor->FindComponentByClass<UMeshComponent>();
+		if (MeshComponent && Actor->IsRootComponentMovable())
+		{
+			MeshComponent->AddRadialImpulse(GetActorLocation(), ExplosionRadius, ExplosionForce, ERadialImpulseFalloff::RIF_Constant);
+		}
 	}
 
 	DrawDebugSphere(GetWorld(), GetActorLocation(), ExplosionRadius, 32, FColor::Red, false, 1.f);

@@ -51,6 +51,9 @@ protected:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Gun_Base|Damage", meta = (AllowPrivateAccess = "true"))
 	float Damage = 10.f;
 
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Gun_Base|Impact", meta = (AllowPrivateAccess = "true"))
+	float ImpulseForce = 100000.f;
+
 	virtual void BeginPlay() override;
 	virtual bool GunTrace(FHitResult& OutHit);
 	virtual FVector GetDirectionFromStartToHit(FVector StartLocation, FHitResult HitResult) const;

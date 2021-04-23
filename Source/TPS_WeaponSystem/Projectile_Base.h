@@ -28,6 +28,9 @@ protected:
 	float ExplosionRadius = 100.f;
 	UPROPERTY(EditDefaultsOnly, Category = "Projectile_Base|Explosion", BlueprintReadOnly, meta = (AllowPrivateAccess = "true"))
 	float ExplosionDamage = 20.f;
+	UPROPERTY(EditDefaultsOnly, Category = "Projectile_Base|Explosion", BlueprintReadOnly, meta = (AllowPrivateAccess = "true"))
+	float ExplosionForce= 100000.f;
+
 
 	virtual void BeginPlay() override;
 	virtual void Explode();
