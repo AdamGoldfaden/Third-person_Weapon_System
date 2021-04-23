@@ -9,6 +9,8 @@ void AProjectile_ClusterBomb::OnHit(UPrimitiveComponent* HitComp, AActor* OtherA
 	ProjectileMesh->SetCollisionEnabled(ECollisionEnabled::NoCollision);
 	ProjectileMesh->SetVisibility(false);
 
+	Explode();
+
 	AProjectile_Cluster* Projectile;
 
 	FVector ProjectileSpawnLocation = Hit.Location;
@@ -20,9 +22,10 @@ void AProjectile_ClusterBomb::OnHit(UPrimitiveComponent* HitComp, AActor* OtherA
 	for (uint8 i = 0; i < NumberOfProjectiles; i++)
 	{
 		FRotator ProjectileSpawnRotation = InitialSpawnRotation;
-		ProjectileSpawnRotation.Add(ProjectileSpawnPitch, 0.f, 0.f);
-		
-		ProjectileSpawnRotation = ProjectileSpawnRotation.Vector().RotateAngleAxis(i * AngleToRotate, Hit.Normal).Rotation();
+		ProjectileSpawnRotation.Add(ProjectileSpawnPitch, i * AngleToRotate, 0.f);
+
+		/*ProjectileSpawnRotation.Add(ProjectileSpawnPitch, 0.f, 0.f);
+		ProjectileSpawnRotation = ProjectileSpawnRotation.Vector().RotateAngleAxis(i * AngleToRotate, Hit.Normal).Rotation();*/
 		
 		Projectile = GetWorld()->SpawnActor<AProjectile_Cluster>(ClusterProjectileClass, ProjectileSpawnLocation, ProjectileSpawnRotation);
 		Projectile->PlaneNormal = Hit.Normal;

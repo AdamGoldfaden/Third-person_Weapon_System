@@ -10,10 +10,12 @@ class TPS_WEAPONSYSTEM_API AProjectile_Cluster : public AProjectile_Base
 	GENERATED_BODY()
 
 private:
-	const float GRAVITY = -9.81;
+	static const float GRAVITY; 
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Projectile_Cluster|Gravity", meta = (AllowPrivateAccess = "true"))
 	float GravityModifier = 1.f;
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Projectile_Cluster|Gravity", meta = (AllowPrivateAccess = "true"))
+	bool bShouldUseArtificialGravity = false;
 
 protected:
 	virtual void OnHit(UPrimitiveComponent* HitComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, FVector NormalImpulse,
