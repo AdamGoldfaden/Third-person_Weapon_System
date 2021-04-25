@@ -53,9 +53,10 @@ void AGun_Raycast::FireBullet()
 	
 	ApplyDamage(OutHit);
 
-	UStaticMeshComponent* MeshComponent = OutHit.GetActor()->FindComponentByClass<UStaticMeshComponent>();
-	if (MeshComponent && OutHit.GetActor()->IsRootComponentMovable())
+	UMeshComponent* MeshComponent = OutHit.GetActor()->FindComponentByClass<UMeshComponent>();
+	if (MeshComponent && OutHit.GetActor()->IsRootComponentMovable() && MeshComponent->IsSimulatingPhysics())
 	{
+		UE_LOG(LogTemp, Warning, TEXT("Raycast gun hit: %s"), *OutHit.GetActor()->GetName());
 		MeshComponent->AddImpulseAtLocation(-OutHit.ImpactNormal * ImpulseForce, OutHit.Location);
 	}
 

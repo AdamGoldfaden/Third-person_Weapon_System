@@ -68,8 +68,6 @@ void AProjectile_Base::Explode()
 	{
 
 		UE_LOG(LogTemp, Warning, TEXT("OverlappedActor: %s"), *Actor->GetName());
-		////float ScaledDamage = ExplosionDamage - (FVector::Distance(GetActorLocation(), Actor->GetActorLocation())/ExplosionRadius * ExplosionDamage);
-		//UE_LOG(LogTemp, Warning, TEXT("Scaled Damage: %f"), ScaledDamage);
 
 		FDamageEvent DamageEvent;
 		Actor->TakeDamage(ExplosionDamage, DamageEvent, nullptr, this);

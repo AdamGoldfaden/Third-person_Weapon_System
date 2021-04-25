@@ -53,4 +53,6 @@ float AEnemyPawn::TakeDamage(float Damage, FDamageEvent const& DamageEvent, ACon
 void AEnemyPawn::Die()
 {
 	GetCapsuleComponent()->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+	GetMesh()->SetSimulatePhysics(true);
+	HealthBar->ToggleVisibility();
 }
