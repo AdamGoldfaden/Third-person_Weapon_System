@@ -33,12 +33,12 @@ void APlayerCharacter::BeginPlay()
 	SpringArmStartZ = SpringArm->GetRelativeLocation().Z;
 	AimingSpringArmStartZ = AimingSpringArm->GetRelativeLocation().Z;
 
-	Gun = GetWorld()->SpawnActor<AGun_Base>(StartingGunClass);
+	Gun = GetWorld()->SpawnActor<AGun_Base>(GunClasses[StartingGunIndex % GunClasses.Num()]);
 	Gun->AttachToComponent(GetMesh(), FAttachmentTransformRules::KeepRelativeTransform, TEXT("WeaponSocket"));
 	Gun->SetOwner(this);
 
 	CurrentGunType = Gun->GetGunType();
-	PreviousGunType = CurrentGunType;
+	CurrentGunIndex = 0;
 }
 
 void APlayerCharacter::StartShootingGun()
@@ -69,8 +69,6 @@ void APlayerCharacter::SwitchGun(uint8 GunClassIndex)
 {
 	if (GunClassIndex == CurrentGunType) { return; }
 
-	PreviousGunType = CurrentGunType;
-
 	AGun_Base* TempGun = Gun;
 	Gun = nullptr;
 	TempGun->Destroy();
@@ -79,11 +77,19 @@ void APlayerCharacter::SwitchGun(uint8 GunClassIndex)
 	Gun->AttachToComponent(GetMesh(), FAttachmentTransformRules::KeepRelativeTransform, TEXT("WeaponSocket"));
 	Gun->SetOwner(this);
 	CurrentGunType = Gun->GetGunType();
+	CurrentGunIndex = GunClassIndex;
 }
 
 void APlayerCharacter::SwitchToPreviousGun()
 {
-	SwitchGun(PreviousGunType);
+	CurrentGunIndex = --CurrentGunIndex % GunClasses.Num();
+	SwitchGun(CurrentGunIndex);
+}
+
+void APlayerCharacter::SwitchToNextGun()
+{
+	CurrentGunIndex = ++CurrentGunIndex % GunClasses.Num();
+	SwitchGun(CurrentGunIndex);
 }
 
 void APlayerCharacter::ReloadGun()
@@ -131,10 +137,11 @@ void APlayerCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCom
 	PlayerInputComponent->BindAction("Aim", IE_Released, this, &APlayerCharacter::StopAiming);
 	PlayerInputComponent->BindAction("ReloadGun", IE_Pressed, this, &APlayerCharacter::ReloadGun);
 	PlayerInputComponent->BindAction("SwitchToPreviousGun", IE_Pressed, this, &APlayerCharacter::SwitchToPreviousGun);
-	PlayerInputComponent->BindAction("Crouch", IE_Pressed, this, &APlayerCharacter::StartCrouch);
-	PlayerInputComponent->BindAction("Crouch", IE_Released, this, &APlayerCharacter::StartUnCrouch);
+	PlayerInputComponent->BindAction("SwitchToNextGun", IE_Pressed, this, &APlayerCharacter::SwitchToNextGun);
 	PlayerInputComponent->BindAction("SwitchToGun1", IE_Pressed, this, &APlayerCharacter::SwitchToGun1);
 	PlayerInputComponent->BindAction("SwitchToGun2", IE_Pressed, this, &APlayerCharacter::SwitchToGun2);
+	PlayerInputComponent->BindAction("Crouch", IE_Pressed, this, &APlayerCharacter::StartCrouch);
+	PlayerInputComponent->BindAction("Crouch", IE_Released, this, &APlayerCharacter::StartUnCrouch);
 
 	//Axis mappings
 	PlayerInputComponent->BindAxis("MoveForward", this, &APlayerCharacter::MoveForward);

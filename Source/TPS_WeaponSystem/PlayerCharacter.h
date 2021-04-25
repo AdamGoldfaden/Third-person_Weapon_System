@@ -23,8 +23,15 @@ private:
 	bool bIsAiming = false;
 	bool bIsFiring = false;
 
-	EGunType PreviousGunType;
+	uint8 CurrentGunIndex;
 	EGunType CurrentGunType;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, meta = (AllowPrivateAccess = "true"))
+	USpringArmComponent* SpringArm;
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, meta = (AllowPrivateAccess = "true"))
+	USpringArmComponent* AimingSpringArm;
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, meta = (AllowPrivateAccess = "true"))
+	UCameraComponent* Camera;
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "APlayerCharacter|Aiming", meta = (AllowPrivateAccess = "true"))
 	float BaseTurnRate = 45.f;
@@ -40,19 +47,12 @@ private:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "APlayerCharacter|Crouch", meta = (AllowPrivateAccess = "true"))
 	float CrouchSpeed = 5.f;
 
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, meta = (AllowPrivateAccess = "true"))
-	USpringArmComponent* SpringArm;
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, meta = (AllowPrivateAccess = "true"))
-	USpringArmComponent* AimingSpringArm;
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, meta = (AllowPrivateAccess = "true"))
-	UCameraComponent* Camera;
-
 	UPROPERTY()
 	AGun_Base* Gun;
 
-	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, meta = (AllowPrivateAccess = "true"))
-	TSubclassOf<AGun_Base> StartingGunClass;
-	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, meta = (AllowPrivateAccess = "true"))
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "APlayerCharacter|GunTypes", meta = (AllowPrivateAccess = "true"))
+	uint8 StartingGunIndex = 0;
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "APlayerCharacter|GunTypes", meta = (AllowPrivateAccess = "true"))
 	TArray<TSubclassOf<AGun_Base>> GunClasses;
 
 	void StartShootingGun();
@@ -66,6 +66,7 @@ private:
 
 	void SwitchGun(uint8 GunClassIndex);
 	void SwitchToPreviousGun();
+	void SwitchToNextGun();
 	void ReloadGun();
 
 	void SwitchToGun1();
