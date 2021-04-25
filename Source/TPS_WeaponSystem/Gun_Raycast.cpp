@@ -1,6 +1,7 @@
 #include "Gun_Raycast.h"
 #include "DrawDebugHelpers.h"
 #include "PlayerCharacter.h"
+#include "Kismet/GameplayStatics.h"
 
 void AGun_Raycast::StartShooting()
 {
@@ -44,19 +45,24 @@ void AGun_Raycast::FireBullet()
 		return;
 	}
 
+	UGameplayStatics::SpawnEmitterAttached(MuzzleFlash, GetGunMesh(), TEXT("MuzzleSocket"), FVector(ForceInit), FRotator::ZeroRotator, 
+		FVector(MuzzleFlashScale, MuzzleFlashScale, MuzzleFlashScale));
+
 	FVector StartLocation = GetGunMesh()->GetSocketLocation(TEXT("MuzzleSocket"));
 	FVector Direction = GetDirectionFromStartToHit(StartLocation, OutHit);
 	FVector EndLocation = StartLocation + (MaxRange * Direction) + GetOwner()->GetVelocity();
 
-	DrawDebugPoint(GetWorld(), OutHit.Location, 5.f, FColor::Red, false, 0.25f);
-	DrawDebugLine(GetWorld(), StartLocation, OutHit.Location, FColor::Red, false, 0.2f);
+	UGameplayStatics::SpawnEmitterAtLocation(GetWorld(), ImpactEffect, OutHit.Location, OutHit.Normal.Rotation(), 
+		FVector(ImpactEffectScale, ImpactEffectScale, ImpactEffectScale));
+
+	/*DrawDebugPoint(GetWorld(), OutHit.Location, 5.f, FColor::Red, false, 0.25f);
+	DrawDebugLine(GetWorld(), StartLocation, OutHit.Location, FColor::Red, false, 0.2f);*/
 	
 	ApplyDamage(OutHit);
 
 	UMeshComponent* MeshComponent = OutHit.GetActor()->FindComponentByClass<UMeshComponent>();
 	if (MeshComponent && OutHit.GetActor()->IsRootComponentMovable() && MeshComponent->IsSimulatingPhysics())
 	{
-		UE_LOG(LogTemp, Warning, TEXT("Raycast gun hit: %s"), *OutHit.GetActor()->GetName());
 		MeshComponent->AddImpulseAtLocation(-OutHit.ImpactNormal * ImpulseForce, OutHit.Location);
 	}
 

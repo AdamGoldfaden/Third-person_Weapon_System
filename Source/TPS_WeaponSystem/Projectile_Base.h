@@ -20,9 +20,10 @@ protected:
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, meta = (AllowPrivateAccess = "true"))
 	UProjectileMovementComponent* ProjectileMovement;
-
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, meta = (AllowPrivateAccess = "true"))
 	UStaticMeshComponent* ProjectileMesh;
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, meta = (AllowPrivateAccess = "true"))
+	UParticleSystemComponent* ParticleTrail;
 
 	UPROPERTY(EditDefaultsOnly, Category = "Projectile_Base|Explosion", BlueprintReadOnly, meta = (AllowPrivateAccess = "true"))
 	float ExplosionRadius = 100.f;
@@ -30,7 +31,10 @@ protected:
 	float ExplosionDamage = 20.f;
 	UPROPERTY(EditDefaultsOnly, Category = "Projectile_Base|Explosion", BlueprintReadOnly, meta = (AllowPrivateAccess = "true"))
 	float ExplosionForce= 100000.f;
-
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Projectile_Base|Explosion", meta = (AllowPrivateAccess = "true"))
+	UParticleSystem* ExplosionEffect;
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Projectile_Base|Explosion", meta = (AllowPrivateAccess = "true"))
+	float ExplosionEffectScale;
 
 	virtual void BeginPlay() override;
 	virtual void Explode();

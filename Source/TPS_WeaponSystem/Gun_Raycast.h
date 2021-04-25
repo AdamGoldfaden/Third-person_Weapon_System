@@ -22,6 +22,15 @@ private:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Gun_Raycast|Recoil",  meta = (AllowPrivateAccess = "true"))
 	float RecoilSpeed = 0.1f;
 
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Gun_Raycast|VFX", meta = (AllowPrivateAccess = "true"))
+	UParticleSystem* ImpactEffect;
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Gun_Raycast|VFX", meta = (AllowPrivateAccess = "true"))
+	UParticleSystem* MuzzleFlash;
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Gun_Raycast|VFX", meta = (AllowPrivateAccess = "true"))
+	float MuzzleFlashScale;
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Gun_Raycast|VFX", meta = (AllowPrivateAccess = "true"))
+	float ImpactEffectScale;
+
 	void FireBullet();
 
 public:
