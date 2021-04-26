@@ -26,7 +26,7 @@ void AGun_Raycast::Tick(float DeltaTime)
 	{
 		//Add Recoil
 		FRotator CurrentControllerRotation = GetOwnerController()->GetControlRotation();
-		FRotator TargetControllerRotation = CurrentControllerRotation.Add(VerticalRecoilAmount, HorizontalRecoilAmount, 0.f);
+		FRotator TargetControllerRotation = CurrentControllerRotation + FRotator(VerticalRecoilAmount, HorizontalRecoilAmount, 0.f);
 		FRotator NewControllerRotation = FMath::RInterpTo(CurrentControllerRotation, TargetControllerRotation, DeltaTime, RecoilSpeed);
 		GetOwnerController()->SetControlRotation(NewControllerRotation);
 	}

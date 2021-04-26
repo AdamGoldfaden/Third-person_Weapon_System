@@ -47,6 +47,8 @@ void AProjectile_Base::AdjustVelocity()
 
 void AProjectile_Base::Explode()
 {
+	UGameplayStatics::SpawnEmitterAtLocation(GetWorld(), ExplosionEffect, GetActorLocation(), GetActorRotation(),
+		FVector(ExplosionEffectScale, ExplosionEffectScale, ExplosionEffectScale));
 
 	TArray<AActor*> HitActors;
 
@@ -76,11 +78,9 @@ void AProjectile_Base::Explode()
 		UMeshComponent* MeshComponent = Actor->FindComponentByClass<UMeshComponent>();
 		if (MeshComponent && Actor->IsRootComponentMovable() && MeshComponent->IsSimulatingPhysics())
 		{
-			UGameplayStatics::SpawnEmitterAtLocation(GetWorld(), ExplosionEffect, GetActorLocation(), GetActorRotation(),
-				FVector(ExplosionEffectScale, ExplosionEffectScale, ExplosionEffectScale));
 			MeshComponent->AddRadialImpulse(GetActorLocation(), ExplosionRadius, ExplosionForce, ERadialImpulseFalloff::RIF_Constant);
 		}
 	}
 
-	DrawDebugSphere(GetWorld(), GetActorLocation(), ExplosionRadius, 32, FColor::Red, false, 1.f);
+	//DrawDebugSphere(GetWorld(), GetActorLocation(), ExplosionRadius, 32, FColor::Red, false, 1.f);
 }
