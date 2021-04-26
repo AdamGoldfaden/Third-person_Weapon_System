@@ -17,7 +17,7 @@
 	"Plugins": [
 		{
 			"Name": "PassiveRagdoll",
-			"Enabled": true,
+			"Enabled": false,
 			"MarketplaceURL": "com.epicgames.launcher://ue/marketplace/product/1d67b511dc0049d792311006379e90d5"
 		}
 	]
