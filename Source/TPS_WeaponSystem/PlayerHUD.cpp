@@ -15,15 +15,12 @@ void UPlayerHUD::NativeTick(const FGeometry& MyGeometry, float InDeltaTime)
 {
 	Super::NativeTick(MyGeometry, InDeltaTime);
 
-	AGun_Base* OwnerCharacterGun;
-	if (OwnerCharacter != nullptr)
-	{
-		OwnerCharacterGun = OwnerCharacter->GetGun();
-	}
-	else
+	if (!OwnerCharacter)
 	{
 		return;
 	}
+
+	AGun_Base* OwnerCharacterGun = OwnerCharacter->GetGun();
 
 	if (CurrentAmmoText != nullptr)
 	{

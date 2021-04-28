@@ -17,29 +17,15 @@ void UReticleUserWidget::NativeTick(const FGeometry& MyGeometry, float InDeltaTi
 {
 	Super::NativeTick(MyGeometry, InDeltaTime);
 
-	AGun_Base* OwnerCharacterGun;
-	if (OwnerCharacter != nullptr)
-	{
-		OwnerCharacterGun = OwnerCharacter->GetGun();
-	}
-	else
+	if (!OwnerCharacter)
 	{
 		return;
 	}
 
-	AccuracyMultiplier = OwnerCharacterGun->GetAccuracy();
-	if (OwnerCharacter->bIsCrouched)
-	{
-		AccuracyMultiplier *= OwnerCharacterGun->CrouchMultiplier;
-	}
-	if (OwnerCharacter->GetIsAiming())
-	{
-		AccuracyMultiplier *= OwnerCharacterGun->AimingMultiplier;
-	}
-	if (OwnerCharacter->GetVelocity().SizeSquared() > 0.f)
-	{
-		AccuracyMultiplier *= OwnerCharacterGun->MovingMultiplier;
-	}
+	AGun_Base* OwnerCharacterGun = OwnerCharacter->GetGun();
+
+	//TODO: Change get Accuracy to include all this
+	AccuracyMultiplier = OwnerCharacterGun->GetAccuracyMultiplier();
 	SetCrossHairPosition();
 }
 

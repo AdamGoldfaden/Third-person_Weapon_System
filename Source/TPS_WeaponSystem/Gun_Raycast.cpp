@@ -60,15 +60,13 @@ void AGun_Raycast::FireBullet()
 	
 	ApplyDamage(OutHit);
 
-	UMeshComponent* MeshComponent = OutHit.GetActor()->FindComponentByClass<UMeshComponent>();
-	if (MeshComponent && OutHit.GetActor()->IsRootComponentMovable() && MeshComponent->IsSimulatingPhysics())
+	if (UMeshComponent* MeshComponent = OutHit.GetActor()->FindComponentByClass<UMeshComponent>())
 	{
-		MeshComponent->AddImpulseAtLocation(-OutHit.ImpactNormal * ImpulseForce, OutHit.Location);
+		if (OutHit.GetActor()->IsRootComponentMovable() && MeshComponent->IsSimulatingPhysics())
+		{
+			MeshComponent->AddImpulseAtLocation(-OutHit.ImpactNormal * ImpulseForce, OutHit.Location);
+		}
 	}
-
-	CurrentAmmo--;
-	if (CurrentAmmo <= 0)
-	{
-		Reload();
-	}
+	
+	ConsumeAmmo(1);
 }

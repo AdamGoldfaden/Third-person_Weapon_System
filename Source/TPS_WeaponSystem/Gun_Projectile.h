@@ -21,5 +21,4 @@ private:
 public:
 	AGun_Projectile();
 	virtual void StartShooting() override;
-	
 };

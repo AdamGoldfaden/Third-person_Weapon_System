@@ -67,15 +67,17 @@ void APlayerCharacter::StopAiming()
 
 void APlayerCharacter::SwitchGun(uint8 GunClassIndex)
 {
-	if (GunClassIndex == CurrentGunType) { return; }
+	if (GunClassIndex == CurrentGunType) 
+	{ 
+		return; 
+	}
 
-	AGun_Base* TempGun = Gun;
-	Gun = nullptr;
-	TempGun->Destroy();
+	Gun->Destroy();
 
 	Gun = GetWorld()->SpawnActor<AGun_Base>(GunClasses[GunClassIndex]);
 	Gun->AttachToComponent(GetMesh(), FAttachmentTransformRules::KeepRelativeTransform, TEXT("WeaponSocket"));
 	Gun->SetOwner(this);
+
 	CurrentGunType = Gun->GetGunType();
 	CurrentGunIndex = GunClassIndex;
 }
@@ -167,7 +169,7 @@ void APlayerCharacter::MoveForward(float Value)
 	if ((Controller != nullptr) && (Value != 0.0f))
 	{
 		const FRotator& Rotation = Controller->GetControlRotation();
-		FRotator YawRotation(0, Rotation.Yaw, 0);
+		FRotator YawRotation(0.0f, Rotation.Yaw, 0.0f);
 
 		FVector Direction = FRotationMatrix(YawRotation).GetUnitAxis(EAxis::X);
 		AddMovementInput(Direction, Value);
@@ -179,7 +181,7 @@ void APlayerCharacter::MoveRight(float Value)
 	if ((Controller != nullptr) && (Value != 0.0f))
 	{
 		const FRotator& Rotation = Controller->GetControlRotation();
-		FRotator YawRotation(0, Rotation.Yaw, 0);
+		FRotator YawRotation(0.0f, Rotation.Yaw, 0.0f);
 
 		FVector Direction = FRotationMatrix(YawRotation).GetUnitAxis(EAxis::Y);
 		AddMovementInput(Direction, Value);

@@ -11,7 +11,6 @@ void AProjectile_ClusterBomb::OnHit(UPrimitiveComponent* HitComp, AActor* OtherA
 
 	Explode();
 
-	AProjectile_Cluster* Projectile;
 
 	FVector ProjectileSpawnLocation = Hit.Location;
 	ProjectileSpawnLocation += (ProjectileSpawnHeight * Hit.Normal);
@@ -26,8 +25,9 @@ void AProjectile_ClusterBomb::OnHit(UPrimitiveComponent* HitComp, AActor* OtherA
 
 		/*ProjectileSpawnRotation.Add(ProjectileSpawnPitch, 0.f, 0.f);
 		ProjectileSpawnRotation = ProjectileSpawnRotation.Vector().RotateAngleAxis(i * AngleToRotate, Hit.Normal).Rotation();*/
-		
-		Projectile = GetWorld()->SpawnActor<AProjectile_Cluster>(ClusterProjectileClass, ProjectileSpawnLocation, ProjectileSpawnRotation);
+
+		AProjectile_Cluster* Projectile = GetWorld()->SpawnActor<AProjectile_Cluster>(ClusterProjectileClass, ProjectileSpawnLocation, 
+			ProjectileSpawnRotation);
 		Projectile->PlaneNormal = Hit.Normal;
 	}
 

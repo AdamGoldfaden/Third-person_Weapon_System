@@ -11,6 +11,8 @@ AGun_Projectile::AGun_Projectile()
 
 void AGun_Projectile::StartShooting()
 {
+	Super::StartShooting();
+
 	if (bIsReloading)
 	{
 		return;
@@ -32,10 +34,6 @@ void AGun_Projectile::StartShooting()
 		Projectile->SetOwner(this);
 		Projectile->AdjustVelocity();
 
-		CurrentAmmo--;
-		if (CurrentAmmo <= 0)
-		{
-			Reload();
-		}
+		ConsumeAmmo(1);
 	}
 }

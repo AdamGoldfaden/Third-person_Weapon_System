@@ -46,17 +46,17 @@ protected:
 	float AccuracyRadius = 1.f;
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Gun_Base|Ammo and Reloading", meta = (AllowPrivateAccess = "true"))
-	uint8 MaxAmmo = 10.f;
+	uint8 MaxAmmo = 10;
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Gun_Base|Damage", meta = (AllowPrivateAccess = "true"))
 	float Damage = 10.f;
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Gun_Base|Impact", meta = (AllowPrivateAccess = "true"))
-	float ImpulseForce = 100000.f;
+	float ImpulseForce = 100000.0f;
 
 	virtual void BeginPlay() override;
 	virtual bool GunTrace(FHitResult& OutHit);
-	virtual FVector GetDirectionFromStartToHit(FVector StartLocation, FHitResult HitResult) const;
+	virtual FVector GetDirectionFromStartToHit(const FVector& StartLocation, FHitResult HitResult) const;
 
 public:	
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Gun_Base|Accuracy", meta = (AllowPrivateAccess = "true"))
@@ -64,9 +64,11 @@ public:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Gun_Base|Accuracy", meta = (AllowPrivateAccess = "true"))
 	float AimingMultiplier = 0.5f;
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Gun_Base|Accuracy", meta = (AllowPrivateAccess = "true"))
-	float MovingMultiplier = 2.f;
+	float MovingMultiplier = 2.0f;
 
 	AGun_Base();
+
+	void ConsumeAmmo(uint8 AmmoToConsume);
 	virtual void StartShooting();
 	virtual void StopShooting();
 	virtual void Reload();
@@ -74,10 +76,11 @@ public:
 	virtual void ApplyDamage(const FHitResult& Hit);
 
 	AController* GetOwnerController() const;
+	float GetAccuracyMultiplier() const;
 	FORCEINLINE EGunType GetGunType() const { return GunType; };
 	FORCEINLINE UTexture2D* GetGunTypeImage() const { return GunTypeImage; };
 	FORCEINLINE USkeletalMeshComponent* GetGunMesh() const { return Mesh; };
-	FORCEINLINE float GetAccuracy() const { return AccuracyRadius; };
+	FORCEINLINE float GetAccuracyRadius() const { return AccuracyRadius; };
 	FORCEINLINE uint8 GetCurrentAmmo() const { return CurrentAmmo; };
 	FORCEINLINE uint8 GetMaxAmmo() const { return MaxAmmo; };
 }; 

@@ -32,7 +32,7 @@ bool AGun_Base::GunTrace(FHitResult& OutHit)
 
 	OwnerController->GetPlayerViewPoint(BulletStartLocation, BulletRotation);
 
-	float AdjustedRadius = FMath::FRandRange(0.f, AccuracyRadius);
+	float AdjustedRadius = FMath::FRandRange(0.0f, AccuracyRadius);
 
 	APlayerCharacter* OwningPlayer = Cast<APlayerCharacter>(OwnerController->GetPawn());
 	if (OwningPlayer == nullptr)
@@ -48,19 +48,19 @@ bool AGun_Base::GunTrace(FHitResult& OutHit)
 	{
 		AdjustedRadius *= AimingMultiplier;
 	}
-	if (OwningPlayer->GetVelocity().SizeSquared() > 0.f)
+	if (OwningPlayer->GetVelocity().SizeSquared() > 0.0f)
 	{
 		AdjustedRadius *= MovingMultiplier;
 	}
 
 	float AdjustedPitch = FMath::FRandRange(-AdjustedRadius, AdjustedRadius);
-	float AdjustedYaw = FMath::Sqrt(FMath::Pow(AdjustedRadius, 2) - FMath::Pow(AdjustedPitch, 2));
+	float AdjustedYaw = FMath::Sqrt(FMath::Pow(AdjustedRadius, 2.0f) - FMath::Pow(AdjustedPitch, 2.0f));
 	if (FMath::RandBool())
 	{
 		AdjustedYaw = -AdjustedYaw;
 	}
 
-	BulletRotation.Add(AdjustedPitch, AdjustedYaw, 0);
+	BulletRotation.Add(AdjustedPitch, AdjustedYaw, 0.0f);
 	FVector BulletEndLocation = BulletStartLocation + MaxRange * BulletRotation.Vector();
 
 	FCollisionQueryParams Params;
@@ -70,7 +70,7 @@ bool AGun_Base::GunTrace(FHitResult& OutHit)
 	return GetWorld()->LineTraceSingleByChannel(OutHit, BulletStartLocation, BulletEndLocation, ECC_GameTraceChannel1, Params);
 }
 
-FVector AGun_Base::GetDirectionFromStartToHit(FVector StartLocation, FHitResult HitResult) const
+FVector AGun_Base::GetDirectionFromStartToHit(const FVector& StartLocation, FHitResult HitResult) const
 {
 	FVector TraceDirection = (HitResult.Location - StartLocation).GetSafeNormal();
 	return TraceDirection;
@@ -121,4 +121,38 @@ void AGun_Base::ApplyDamage(const FHitResult& Hit)
 
 	FPointDamageEvent DamageEvent(Damage, Hit, Hit.Normal, nullptr);
 	Hit.Actor->TakeDamage(Damage, DamageEvent, GetOwnerController(), this);
+}
+
+float AGun_Base::GetAccuracyMultiplier() const
+{
+	APlayerCharacter* OwnerPlayerCharacter = Cast<APlayerCharacter>(GetOwner());
+	if (!OwnerPlayerCharacter)
+	{
+		return 1.0f;
+	}
+
+	float AccuracyMultiplier = AccuracyRadius;
+	if (OwnerPlayerCharacter->bIsCrouched)
+	{
+		AccuracyMultiplier *= CrouchMultiplier;
+	}
+	if (OwnerPlayerCharacter->GetIsAiming())
+	{
+		AccuracyMultiplier *= AimingMultiplier;
+	}
+	if (OwnerPlayerCharacter->GetVelocity().SizeSquared() > 0.0f)
+	{
+		AccuracyMultiplier *= MovingMultiplier;
+	}
+
+	return AccuracyMultiplier;
+}
+
+void AGun_Base::ConsumeAmmo(uint8 AmmoToConsume)
+{
+	CurrentAmmo -= AmmoToConsume;
+	if (CurrentAmmo <= 0)
+	{
+		Reload();
+	}
 }
