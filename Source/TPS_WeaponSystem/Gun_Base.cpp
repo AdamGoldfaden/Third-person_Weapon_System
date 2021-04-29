@@ -19,6 +19,13 @@ void AGun_Base::BeginPlay()
 	CurrentAmmo = MaxAmmo;
 }
 
+void AGun_Base::Tick(float DeltaTime)
+{
+	Super::Tick(DeltaTime);
+	
+	FiringMultiplier = FMath::FInterpTo(FiringMultiplier, 1.0f, DeltaTime, FiringMultiplierDecreaseRate);
+}
+
 bool AGun_Base::GunTrace(FHitResult& OutHit)
 {
 	AController* OwnerController = GetOwnerController();
@@ -90,6 +97,7 @@ void AGun_Base::StartShooting()
 { 
 	bIsShooting = true; 
 }
+
 void AGun_Base::StopShooting()
 { 
 	bIsShooting = false; 
@@ -101,6 +109,7 @@ void AGun_Base::Reload()
 	{
 		return;
 	}
+
 	bIsReloading = true;
 	GetWorld()->GetTimerManager().SetTimer(ReloadTimerHandle, this, &AGun_Base::StopReloading, ReloadTime, false);
 }
@@ -145,6 +154,8 @@ float AGun_Base::GetAccuracyMultiplier() const
 		AccuracyMultiplier *= MovingMultiplier;
 	}
 
+	AccuracyMultiplier *= FiringMultiplier;
+
 	return AccuracyMultiplier;
 }
 
@@ -155,4 +166,14 @@ void AGun_Base::ConsumeAmmo(uint8 AmmoToConsume)
 	{
 		Reload();
 	}
+}
+
+void AGun_Base::IncreaseFiringMultiplier(float AmountToIncrease)
+{
+	FiringMultiplier += AmountToIncrease;
+}
+
+void AGun_Base::ResetFiringMultiplier()
+{
+	FiringMultiplier = 1.0f;
 }

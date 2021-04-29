@@ -45,6 +45,8 @@ void AGun_Raycast::FireBullet()
 		return;
 	}
 
+	IncreaseFiringMultiplier(FiringAccuracyMultipler);
+
 	UGameplayStatics::SpawnEmitterAttached(MuzzleFlash, GetGunMesh(), TEXT("MuzzleSocket"), FVector(ForceInit), FRotator::ZeroRotator, 
 		FVector(MuzzleFlashScale, MuzzleFlashScale, MuzzleFlashScale));
 

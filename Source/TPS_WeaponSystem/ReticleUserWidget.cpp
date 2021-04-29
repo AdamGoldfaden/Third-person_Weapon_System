@@ -24,7 +24,6 @@ void UReticleUserWidget::NativeTick(const FGeometry& MyGeometry, float InDeltaTi
 
 	AGun_Base* OwnerCharacterGun = OwnerCharacter->GetGun();
 
-	//TODO: Change get Accuracy to include all this
 	AccuracyMultiplier = OwnerCharacterGun->GetAccuracyMultiplier();
 	SetCrossHairPosition();
 }

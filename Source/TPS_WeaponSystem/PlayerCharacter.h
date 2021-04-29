@@ -14,6 +14,26 @@ class TPS_WEAPONSYSTEM_API APlayerCharacter : public ACharacter
 {
 	GENERATED_BODY()
 
+public:	
+	APlayerCharacter();
+	virtual void Tick(float DeltaTime) override;
+	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
+	
+	FORCEINLINE USpringArmComponent* GetSpringArm() const { return SpringArm; }
+	FORCEINLINE UCameraComponent* GetCamera() const { return Camera; }
+	FORCEINLINE AGun_Base* GetGun() const { return Gun; }
+	UFUNCTION(BlueprintPure)
+	bool GetIsAiming() const { return bIsAiming; }
+	UFUNCTION(BlueprintPure)
+	bool GetIsFiring() const { return bIsFiring; }
+
+protected:
+	virtual void BeginPlay() override;
+	void MoveForward(float Value);
+	void MoveRight(float Value);
+	void TurnAtRate(float Rate);
+	void LookUpAtRate(float Rate);
+
 private:
 	float CapsuleWidth = 42.0f;
 	float CapsuleHeight = 96.0f;
@@ -27,33 +47,33 @@ private:
 	EGunType CurrentGunType;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, meta = (AllowPrivateAccess = "true"))
-	USpringArmComponent* SpringArm;
+		USpringArmComponent* SpringArm;
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, meta = (AllowPrivateAccess = "true"))
-	USpringArmComponent* AimingSpringArm;
+		USpringArmComponent* AimingSpringArm;
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, meta = (AllowPrivateAccess = "true"))
-	UCameraComponent* Camera;
+		UCameraComponent* Camera;
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "APlayerCharacter|Aiming", meta = (AllowPrivateAccess = "true"))
-	float BaseTurnRate = 45.f;
+		float BaseTurnRate = 45.f;
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "APlayerCharacter|Aiming", meta = (AllowPrivateAccess = "true"))
-	float BaseLookUpRate = 45.f;
+		float BaseLookUpRate = 45.f;
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "APlayerCharacter|Aiming", meta = (AllowPrivateAccess = "true"))
-	float AimingSpeed = 10.f;
+		float AimingSpeed = 10.f;
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "APlayerCharacter|Crouch", meta = (AllowPrivateAccess = "true"))
-	float SpringArmCrouchZ = 30.f;
+		float SpringArmCrouchZ = 30.f;
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "APlayerCharacter|Crouch", meta = (AllowPrivateAccess = "true"))
-	float AimingSpringArmCrouchZ = 30.f;
+		float AimingSpringArmCrouchZ = 30.f;
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "APlayerCharacter|Crouch", meta = (AllowPrivateAccess = "true"))
-	float CrouchSpeed = 5.f;
+		float CrouchSpeed = 5.f;
 
 	UPROPERTY()
-	AGun_Base* Gun;
+		AGun_Base* Gun;
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "APlayerCharacter|GunTypes", meta = (AllowPrivateAccess = "true"))
-	uint8 StartingGunIndex = 0;
+		uint8 StartingGunIndex = 0;
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "APlayerCharacter|GunTypes", meta = (AllowPrivateAccess = "true"))
-	TArray<TSubclassOf<AGun_Base>> GunClasses;
+		TArray<TSubclassOf<AGun_Base>> GunClasses;
 
 	void StartShootingGun();
 	void StopShootingGun();
@@ -71,29 +91,4 @@ private:
 
 	void SwitchToGun1();
 	void SwitchToGun2();
-
-protected:
-	virtual void BeginPlay() override;
-
-	void MoveForward(float Value);
-	void MoveRight(float Value);
-
-	void TurnAtRate(float Rate);
-	void LookUpAtRate(float Rate);
-
-public:	
-	APlayerCharacter();
-
-	virtual void Tick(float DeltaTime) override;
-
-	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
-	
-	FORCEINLINE USpringArmComponent* GetSpringArm() const { return SpringArm; }
-	FORCEINLINE UCameraComponent* GetCamera() const { return Camera; }
-	FORCEINLINE AGun_Base* GetGun() const { return Gun; }
-
-	UFUNCTION(BlueprintPure)
-	bool GetIsAiming() const { return bIsAiming; }
-	UFUNCTION(BlueprintPure)
-	bool GetIsFiring() const { return bIsFiring; }
 };
