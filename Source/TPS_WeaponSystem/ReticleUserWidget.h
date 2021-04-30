@@ -4,37 +4,30 @@
 #include "Blueprint/UserWidget.h"
 #include "ReticleUserWidget.generated.h"
 
-class UImage;
 class APlayerCharacter;
+class UImage;
 
 UCLASS()
 class TPS_WEAPONSYSTEM_API UReticleUserWidget : public UUserWidget
 {
 	GENERATED_BODY()
 
-private:
-	UPROPERTY(meta = (BindWidgetOptional))
-	UImage* CrossHair_Bottom;
-	UPROPERTY(meta = (BindWidgetOptional))
-	UImage* CrossHair_Top;
-	UPROPERTY(meta = (BindWidgetOptional))
-	UImage* CrossHair_Right;
-	UPROPERTY(meta = (BindWidgetOptional))
-	UImage* CrossHair_Left;
+public:
+	void ShowHitMarker();
+	void HideHitMarker();
 
-	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, meta = (AllowPrivateAccess = "true"))
-	float AccuracyTranslation = 20.f;
+protected:
+	virtual void NativeConstruct() override;
+	FORCEINLINE APlayerCharacter* GetOwnerCharacter() const { return OwnerCharacter; }
+private:
+	FTimerHandle HitMarkerTimerHandle;
 
 	UPROPERTY()
 	APlayerCharacter* OwnerCharacter;
 
-	void SetCrossHairPosition();
-
-protected:
-	virtual void NativeConstruct() override;
-	virtual void NativeTick(const FGeometry& MyGeometry, float InDeltaTime) override;
-
-public:
-	float AccuracyMultiplier = 1.f;
-
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "ReticleUserWidget|HitMarker", meta = (AllowPrivateAccess = "true"))
+	float HitMarkerVisibilityTime = 0.5f;
+	
+	UPROPERTY(meta = (BindWidgetOptional))
+	UImage* HitMarker;
 };

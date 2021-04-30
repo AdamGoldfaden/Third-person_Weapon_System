@@ -1,5 +1,7 @@
 #include "TPSPlayerController.h"
 #include "Blueprint/UserWidget.h"
+#include "ReticleUserWidget.h"
+#include "Gun_Base.h"
 
 void ATPSPlayerController::BeginPlay()
 {
@@ -10,4 +12,20 @@ void ATPSPlayerController::BeginPlay()
 	{
 		HUD->AddToViewport();
 	}
+}
+
+void ATPSPlayerController::ChangeReticle(TSubclassOf<UUserWidget> ReticleWidgetClass)
+{
+	if (Reticle)
+	{
+		Reticle->RemoveFromViewport();
+	}
+
+	Reticle = CreateWidget(this, ReticleWidgetClass);
+	if (!Reticle)
+	{
+		return;
+	}
+
+	Reticle->AddToViewport();
 }

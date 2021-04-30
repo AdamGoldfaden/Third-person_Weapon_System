@@ -11,6 +11,8 @@ enum EGunType
 	Cluster UMETA(DisplayName, "ClusterBomb")
 };
 
+class UUserWidget;
+
 UCLASS()
 class TPS_WEAPONSYSTEM_API AGun_Base : public AActor
 {
@@ -37,6 +39,7 @@ public:
 	FORCEINLINE float GetAccuracyRadius() const { return AccuracyRadius; };
 	FORCEINLINE uint8 GetCurrentAmmo() const { return CurrentAmmo; };
 	FORCEINLINE uint8 GetMaxAmmo() const { return MaxAmmo; };
+	FORCEINLINE TSubclassOf<UUserWidget> GetReticleWidgetClass() const { return ReticleWidgetClass; }
 
 	bool bIsShooting = false;
 	bool bIsReloading = false;
@@ -53,6 +56,8 @@ protected:
 	virtual void BeginPlay() override;
 	virtual bool GunTrace(FHitResult& OutHit);
 	virtual FVector GetDirectionFromStartToHit(const FVector& StartLocation, FHitResult HitResult) const;
+
+	void ShowHitMarker();
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Gun_Base|Gun Info", meta = (AllowPrivateAccess = "true"))
 	float MaxRange = 10000.f;
@@ -83,6 +88,9 @@ private:
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Gun_Base|Gun Info", meta = (AllowPrivateAccess = "true"))
 	UTexture2D* GunTypeImage;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Gun_Base|Gun Info", meta = (AllowPrivateAccess = "true"))
+	TSubclassOf<UUserWidget> ReticleWidgetClass;
 
 	FTimerHandle ReloadTimerHandle;
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Gun_Base|Ammo and Reloading", meta = (AllowPrivateAccess = "true"))

@@ -1,5 +1,7 @@
 #include "Gun_Base.h"
 #include "PlayerCharacter.h"
+#include "TPSPlayerController.h"
+#include "Blueprint/UserWidget.h"
 
 AGun_Base::AGun_Base()
 {
@@ -176,4 +178,20 @@ void AGun_Base::IncreaseFiringMultiplier(float AmountToIncrease)
 void AGun_Base::ResetFiringMultiplier()
 {
 	FiringMultiplier = 1.0f;
+}
+
+void AGun_Base::ShowHitMarker()
+{
+	ATPSPlayerController* OwnerPlayerController = Cast<ATPSPlayerController>(GetOwnerController());
+	if (!OwnerPlayerController)
+	{
+		return;
+	}
+
+	UUserWidget* OwnerPlayerHUD = OwnerPlayerController->GetHUD();
+	if (!OwnerPlayerHUD)
+	{
+		return;
+	}
+	
 }

@@ -6,6 +6,8 @@
 #include "GameFramework/Controller.h"
 #include "GameFramework/SpringArmComponent.h"
 #include "Gun_Base.h"
+#include "TPSPlayerController.h"
+
 
 APlayerCharacter::APlayerCharacter()
 {
@@ -33,12 +35,7 @@ void APlayerCharacter::BeginPlay()
 	SpringArmStartZ = SpringArm->GetRelativeLocation().Z;
 	AimingSpringArmStartZ = AimingSpringArm->GetRelativeLocation().Z;
 
-	Gun = GetWorld()->SpawnActor<AGun_Base>(GunClasses[StartingGunIndex % GunClasses.Num()]);
-	Gun->AttachToComponent(GetMesh(), FAttachmentTransformRules::KeepRelativeTransform, TEXT("WeaponSocket"));
-	Gun->SetOwner(this);
-
-	CurrentGunType = Gun->GetGunType();
-	CurrentGunIndex = 0;
+	CreateNewGun(StartingGunIndex);
 }
 
 void APlayerCharacter::StartShootingGun()
@@ -74,12 +71,9 @@ void APlayerCharacter::SwitchGun(uint8 GunClassIndex)
 
 	Gun->Destroy();
 
-	Gun = GetWorld()->SpawnActor<AGun_Base>(GunClasses[GunClassIndex]);
-	Gun->AttachToComponent(GetMesh(), FAttachmentTransformRules::KeepRelativeTransform, TEXT("WeaponSocket"));
-	Gun->SetOwner(this);
+	CreateNewGun(GunClassIndex);
 
-	CurrentGunType = Gun->GetGunType();
-	CurrentGunIndex = GunClassIndex;
+
 }
 
 void APlayerCharacter::SwitchToPreviousGun()
@@ -212,4 +206,16 @@ void APlayerCharacter::SwitchToGun1()
 void APlayerCharacter::SwitchToGun2()
 {
 	SwitchGun(1);
+}
+
+void APlayerCharacter::CreateNewGun(uint8 GunClassIndex) 
+{
+	Gun = GetWorld()->SpawnActor<AGun_Base>(GunClasses[GunClassIndex % GunClasses.Num()]);
+	Gun->AttachToComponent(GetMesh(), FAttachmentTransformRules::KeepRelativeTransform, TEXT("WeaponSocket"));
+	Gun->SetOwner(this);
+
+	Cast<ATPSPlayerController>(GetController())->ChangeReticle(Gun->GetReticleWidgetClass());
+
+	CurrentGunType = Gun->GetGunType();
+	CurrentGunIndex = GunClassIndex;
 }

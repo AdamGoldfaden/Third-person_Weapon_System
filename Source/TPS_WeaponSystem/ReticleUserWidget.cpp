@@ -1,8 +1,6 @@
 #include "ReticleUserWidget.h"
-#include "Components/Image.h"
 #include "PlayerCharacter.h"
-#include "Gun_Base.h"
-#include "GameFramework/CharacterMovementComponent.h"
+#include "Components/Image.h"
 
 
 void UReticleUserWidget::NativeConstruct()
@@ -11,42 +9,17 @@ void UReticleUserWidget::NativeConstruct()
 
 	OwnerCharacter = Cast<APlayerCharacter>(GetOwningPlayerPawn());
 }
-	
 
-void UReticleUserWidget::NativeTick(const FGeometry& MyGeometry, float InDeltaTime)
+void UReticleUserWidget::ShowHitMarker()
 {
-	Super::NativeTick(MyGeometry, InDeltaTime);
-
-	if (!OwnerCharacter)
-	{
-		return;
-	}
-
-	AGun_Base* OwnerCharacterGun = OwnerCharacter->GetGun();
-
-	AccuracyMultiplier = OwnerCharacterGun->GetAccuracyMultiplier();
-	SetCrossHairPosition();
+	HitMarker->SetVisibility(ESlateVisibility::Visible);
+	GetWorld()->GetTimerManager().SetTimer(HitMarkerTimerHandle, this, &UReticleUserWidget::HideHitMarker, HitMarkerVisibilityTime);
 }
 
-void UReticleUserWidget::SetCrossHairPosition()
+void UReticleUserWidget::HideHitMarker()
 {
-	if (CrossHair_Bottom)
+	if (HitMarker)
 	{
-		CrossHair_Bottom->SetRenderTranslation(FVector2D(0.f, AccuracyMultiplier*AccuracyTranslation));
-	}
-
-	if (CrossHair_Top)
-	{
-		CrossHair_Top->SetRenderTranslation(FVector2D(0.f, -AccuracyMultiplier*AccuracyTranslation));
-	}
-
-	if (CrossHair_Left)
-	{
-		CrossHair_Left->SetRenderTranslation(FVector2D(-AccuracyMultiplier*AccuracyTranslation, 0.f));
-	}
-
-	if (CrossHair_Right)
-	{
-		CrossHair_Right->SetRenderTranslation(FVector2D(AccuracyMultiplier*AccuracyTranslation, 0.f));
+		HitMarker->SetVisibility(ESlateVisibility::Hidden);
 	}
 }

@@ -9,6 +9,7 @@ void UPlayerHUD::NativeConstruct()
 	Super::NativeConstruct();
 
 	OwnerCharacter = Cast<APlayerCharacter>(GetOwningPlayerPawn());
+
 }
 
 void UPlayerHUD::NativeTick(const FGeometry& MyGeometry, float InDeltaTime)
