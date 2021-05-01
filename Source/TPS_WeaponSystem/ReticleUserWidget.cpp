@@ -8,10 +8,15 @@ void UReticleUserWidget::NativeConstruct()
 	Super::NativeConstruct();
 
 	OwnerCharacter = Cast<APlayerCharacter>(GetOwningPlayerPawn());
+	HideHitMarker();
 }
 
 void UReticleUserWidget::ShowHitMarker()
 {
+	if (HitMarker->GetVisibility() == ESlateVisibility::Visible)
+	{
+		return;
+	}
 	HitMarker->SetVisibility(ESlateVisibility::Visible);
 	GetWorld()->GetTimerManager().SetTimer(HitMarkerTimerHandle, this, &UReticleUserWidget::HideHitMarker, HitMarkerVisibilityTime);
 }

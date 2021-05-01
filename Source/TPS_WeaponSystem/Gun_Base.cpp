@@ -2,6 +2,8 @@
 #include "PlayerCharacter.h"
 #include "TPSPlayerController.h"
 #include "Blueprint/UserWidget.h"
+#include "ReticleUserWidget.h"
+
 
 AGun_Base::AGun_Base()
 {
@@ -188,10 +190,11 @@ void AGun_Base::ShowHitMarker()
 		return;
 	}
 
-	UUserWidget* OwnerPlayerHUD = OwnerPlayerController->GetHUD();
-	if (!OwnerPlayerHUD)
+	UReticleUserWidget* ReticleWidget = Cast<UReticleUserWidget>(OwnerPlayerController->GetReticle());
+	if (!ReticleWidget)
 	{
 		return;
 	}
-	
+
+	ReticleWidget->ShowHitMarker();
 }

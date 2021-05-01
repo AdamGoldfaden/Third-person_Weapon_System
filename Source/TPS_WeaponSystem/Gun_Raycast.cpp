@@ -2,6 +2,7 @@
 #include "DrawDebugHelpers.h"
 #include "PlayerCharacter.h"
 #include "Kismet/GameplayStatics.h"
+#include "EnemyPawn.h"
 
 void AGun_Raycast::StartShooting()
 {
@@ -47,6 +48,11 @@ void AGun_Raycast::FireBullet()
 
 	IncreaseFiringMultiplier(FiringAccuracyMultipler);
 
+	if (Cast<AEnemyPawn>(OutHit.GetActor()))
+	{
+		ShowHitMarker();
+	}
+
 	UGameplayStatics::SpawnEmitterAttached(MuzzleFlash, GetGunMesh(), TEXT("MuzzleSocket"), FVector(ForceInit), FRotator::ZeroRotator, 
 		FVector(MuzzleFlashScale, MuzzleFlashScale, MuzzleFlashScale));
 
@@ -56,9 +62,6 @@ void AGun_Raycast::FireBullet()
 
 	UGameplayStatics::SpawnEmitterAtLocation(GetWorld(), ImpactEffect, OutHit.Location, OutHit.Normal.Rotation(), 
 		FVector(ImpactEffectScale, ImpactEffectScale, ImpactEffectScale));
-
-	/*DrawDebugPoint(GetWorld(), OutHit.Location, 5.f, FColor::Red, false, 0.25f);
-	DrawDebugLine(GetWorld(), StartLocation, OutHit.Location, FColor::Red, false, 0.2f);*/
 	
 	ApplyDamage(OutHit);
 
@@ -71,4 +74,7 @@ void AGun_Raycast::FireBullet()
 	}
 	
 	ConsumeAmmo(1);
+
+	/*DrawDebugPoint(GetWorld(), OutHit.Location, 5.f, FColor::Red, false, 0.25f);
+	DrawDebugLine(GetWorld(), StartLocation, OutHit.Location, FColor::Red, false, 0.2f);*/
 }
