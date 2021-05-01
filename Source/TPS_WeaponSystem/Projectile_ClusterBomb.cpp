@@ -29,6 +29,7 @@ void AProjectile_ClusterBomb::OnHit(UPrimitiveComponent* HitComp, AActor* OtherA
 		AProjectile_Cluster* Projectile = GetWorld()->SpawnActor<AProjectile_Cluster>(ClusterProjectileClass, ProjectileSpawnLocation, 
 			ProjectileSpawnRotation);
 		Projectile->PlaneNormal = Hit.Normal;
+		Projectile->SetOwner(GetOwner());
 	}
 
 	Destroy();

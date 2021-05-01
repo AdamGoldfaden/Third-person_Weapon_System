@@ -30,6 +30,7 @@ public:
 
 	void IncreaseFiringMultiplier(float AmountToIncrease);
 	void ResetFiringMultiplier();
+	void ShowHitMarker();
 
 	AController* GetOwnerController() const;
 	float GetAccuracyMultiplier() const;
@@ -56,8 +57,6 @@ protected:
 	virtual void BeginPlay() override;
 	virtual bool GunTrace(FHitResult& OutHit);
 	virtual FVector GetDirectionFromStartToHit(const FVector& StartLocation, FHitResult HitResult) const;
-
-	void ShowHitMarker();
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Gun_Base|Gun Info", meta = (AllowPrivateAccess = "true"))
 	float MaxRange = 10000.f;

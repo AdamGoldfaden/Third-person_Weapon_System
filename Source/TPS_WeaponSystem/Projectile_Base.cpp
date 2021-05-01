@@ -5,7 +5,8 @@
 #include "Kismet/KismetSystemLibrary.h"
 #include "Particles/ParticleSystemComponent.h"
 #include "Kismet/GameplayStatics.h"
-
+#include "EnemyPawn.h"
+#include "Gun_Base.h"
 
 AProjectile_Base::AProjectile_Base()
 {
@@ -79,6 +80,14 @@ void AProjectile_Base::Explode()
 		if (MeshComponent && Actor->IsRootComponentMovable() && MeshComponent->IsSimulatingPhysics())
 		{
 			MeshComponent->AddRadialImpulse(GetActorLocation(), ExplosionRadius, ExplosionForce, ERadialImpulseFalloff::RIF_Constant);
+		}
+
+		if (Cast<AEnemyPawn>(Actor))
+		{
+			if (AGun_Base* OwnerGun = Cast<AGun_Base>(GetOwner()))
+			{
+				OwnerGun->ShowHitMarker();
+			}
 		}
 	}
 
