@@ -7,6 +7,9 @@
 #include "GameFramework/SpringArmComponent.h"
 #include "Gun_Base.h"
 #include "TPSPlayerController.h"
+#include "Kismet/GameplayStatics.h"
+#include "TPS_WeaponSystemGameMode.h"
+
 
 
 APlayerCharacter::APlayerCharacter()
@@ -138,6 +141,7 @@ void APlayerCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCom
 	PlayerInputComponent->BindAction("SwitchToGun2", IE_Pressed, this, &APlayerCharacter::SwitchToGun2);
 	PlayerInputComponent->BindAction("Crouch", IE_Pressed, this, &APlayerCharacter::StartCrouch);
 	PlayerInputComponent->BindAction("Crouch", IE_Released, this, &APlayerCharacter::StartUnCrouch);
+	PlayerInputComponent->BindAction("ResetLevel", IE_Pressed, this, &APlayerCharacter::ResetLevel);
 
 	//Axis mappings
 	PlayerInputComponent->BindAxis("MoveForward", this, &APlayerCharacter::MoveForward);
@@ -218,4 +222,9 @@ void APlayerCharacter::CreateNewGun(uint8 GunClassIndex)
 
 	CurrentGunType = Gun->GetGunType();
 	CurrentGunIndex = GunClassIndex;
+}
+
+void APlayerCharacter::ResetLevel()
+{
+	Cast<ATPS_WeaponSystemGameMode>(UGameplayStatics::GetGameMode(GetWorld()))->ResetLevel();
 }

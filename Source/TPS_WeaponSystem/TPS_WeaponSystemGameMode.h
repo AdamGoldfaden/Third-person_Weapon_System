@@ -11,6 +11,17 @@ class ATPS_WeaponSystemGameMode : public AGameModeBase
 
 public:
 	ATPS_WeaponSystemGameMode() {}
+	void ResetLevel();
+
+protected:
+	virtual void BeginPlay() override;
+
+private:
+	TArray<AActor*> Enemies;
+	TArray<AActor*> PhysicsObjects;
+
+	TArray<FTransform> EnemyTransforms;
+	TArray<FTransform> PhysicsObjectTransforms;
 };
 
 

@@ -19,6 +19,8 @@ void AEnemyPawn::BeginPlay()
 	CurrentHealth = MaxHealth;
 	Player = Cast<APlayerCharacter>(GetWorld()->GetFirstPlayerController()->GetPawn());
 	Cast<UHealthBar>(HealthBar->GetWidget())->SetOwnerEnemyPawn(this);
+
+	StartingMeshTransform = GetMesh()->GetComponentTransform();
 }
 
 void AEnemyPawn::Tick(float DeltaTime)
@@ -55,4 +57,14 @@ void AEnemyPawn::Die()
 	GetCapsuleComponent()->SetCollisionEnabled(ECollisionEnabled::NoCollision);
 	GetMesh()->SetSimulatePhysics(true);
 	HealthBar->ToggleVisibility();
+}
+
+void AEnemyPawn::Revive()
+{
+	bIsDead = false;
+	GetCapsuleComponent()->SetCollisionEnabled(ECollisionEnabled::QueryOnly);
+	GetMesh()->SetSimulatePhysics(false);
+	GetMesh()->SetWorldTransform(StartingMeshTransform);
+	CurrentHealth = MaxHealth;
+	HealthBar->SetVisibility(true);
 }

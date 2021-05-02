@@ -22,6 +22,9 @@ private:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Gun_Raycast|FireRate", meta = (AllowPrivateAccess = "true"))
 	float FiringAccuracyMultipler = 0.1f;
 
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Gun_Raycast|CritDamage", meta = (AllowPrivateAccess = "true"))
+	float HeadShotDamage = 20;
+
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Gun_Raycast|Recoil", meta = (AllowPrivateAccess = "true"))
 	float VerticalRecoilAmount = 0.15f;
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Gun_Raycast|Recoil", meta = (AllowPrivateAccess = "true"))

@@ -54,6 +54,8 @@ private:
 
 	void CreateNewGun(uint8 GunClassIndex);
 
+	void ResetLevel();
+
 	float CapsuleWidth = 42.0f;
 	float CapsuleHeight = 96.0f;
 	float SpringArmStartZ;

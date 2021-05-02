@@ -14,6 +14,7 @@ class TPS_WEAPONSYSTEM_API UReticleUserWidget : public UUserWidget
 
 public:
 	void ShowHitMarker();
+	void ShowCritHitMarker();
 	void HideHitMarker();
 
 protected:

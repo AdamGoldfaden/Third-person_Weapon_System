@@ -26,11 +26,12 @@ public:
 	virtual void StopShooting();
 	virtual void Reload();
 	virtual void StopReloading();
-	virtual void ApplyDamage(const FHitResult& Hit);
+	virtual void ApplyDamage(const FHitResult& Hit, float Damage);
 
 	void IncreaseFiringMultiplier(float AmountToIncrease);
 	void ResetFiringMultiplier();
 	void ShowHitMarker();
+	void ShowCritHitMarker();
 
 	AController* GetOwnerController() const;
 	float GetAccuracyMultiplier() const;

@@ -78,7 +78,7 @@ bool AGun_Base::GunTrace(FHitResult& OutHit)
 	Params.AddIgnoredActor(this);
 	Params.AddIgnoredActor(GetOwner());
 
-	return GetWorld()->LineTraceSingleByChannel(OutHit, BulletStartLocation, BulletEndLocation, ECC_GameTraceChannel1, Params);
+	return GetWorld()->LineTraceSingleByChannel(OutHit, BulletStartLocation, BulletEndLocation, ECC_GameTraceChannel3, Params);
 }
 
 FVector AGun_Base::GetDirectionFromStartToHit(const FVector& StartLocation, FHitResult HitResult) const
@@ -124,7 +124,7 @@ void AGun_Base::StopReloading()
 	bIsReloading = false;
 }
 
-void AGun_Base::ApplyDamage(const FHitResult& Hit)
+void AGun_Base::ApplyDamage(const FHitResult& Hit, float DamageToApply)
 {
 	AActor* HitActor = Hit.GetActor();
 	if (HitActor == nullptr)
@@ -132,8 +132,8 @@ void AGun_Base::ApplyDamage(const FHitResult& Hit)
 		return;
 	}
 
-	FPointDamageEvent DamageEvent(Damage, Hit, Hit.Normal, nullptr);
-	Hit.Actor->TakeDamage(Damage, DamageEvent, GetOwnerController(), this);
+	FPointDamageEvent DamageEvent(DamageToApply, Hit, Hit.Normal, nullptr);
+	Hit.Actor->TakeDamage(DamageToApply, DamageEvent, GetOwnerController(), this);
 }
 
 float AGun_Base::GetAccuracyMultiplier() const
@@ -197,4 +197,21 @@ void AGun_Base::ShowHitMarker()
 	}
 
 	ReticleWidget->ShowHitMarker();
+}
+
+void AGun_Base::ShowCritHitMarker()
+{
+	ATPSPlayerController* OwnerPlayerController = Cast<ATPSPlayerController>(GetOwnerController());
+	if (!OwnerPlayerController)
+	{
+		return;
+	}
+
+	UReticleUserWidget* ReticleWidget = Cast<UReticleUserWidget>(OwnerPlayerController->GetReticle());
+	if (!ReticleWidget)
+	{
+		return;
+	}
+	
+	ReticleWidget->ShowCritHitMarker();
 }

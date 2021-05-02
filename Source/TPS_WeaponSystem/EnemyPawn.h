@@ -12,7 +12,24 @@ class TPS_WEAPONSYSTEM_API AEnemyPawn : public ACharacter
 {
 	GENERATED_BODY()
 
+public:
+	AEnemyPawn();
+	virtual void Tick(float DeltaTime) override;
+
+	void Revive();
+
+	float TakeDamage(float Damage, FDamageEvent const& DamageEvent, AController* EventInstigator, AActor* DamageCauser) override;
+	FORCEINLINE float GetHealth() const { return CurrentHealth; }
+	FORCEINLINE float GetHealthPercentage() const { return CurrentHealth / MaxHealth; }
+	FORCEINLINE float IsDead() const { return bIsDead; }
+	FORCEINLINE FTransform GetStartingMeshTransform() const { return StartingMeshTransform; }
+
+protected:
+	virtual void BeginPlay() override;
+
 private:
+	void Die();
+
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, meta = (AllowPrivateAccess = "true"))
 	UWidgetComponent* HealthBar;
 
@@ -22,18 +39,5 @@ private:
 	bool bIsDead = false;
 
 	APlayerCharacter* Player;
-
-	void Die();
-
-protected:
-	virtual void BeginPlay() override;
-
-public:
-	AEnemyPawn();
-	virtual void Tick(float DeltaTime) override;
-
-	float TakeDamage(float Damage, FDamageEvent const& DamageEvent, AController* EventInstigator, AActor* DamageCauser) override;
-	FORCEINLINE float GetHealth() const { return CurrentHealth; }
-	FORCEINLINE float GetHealthPercentage() const {return CurrentHealth / MaxHealth;}
-	FORCEINLINE float IsDead() const { return bIsDead; }
+	FTransform StartingMeshTransform;
 };

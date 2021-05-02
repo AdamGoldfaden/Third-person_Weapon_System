@@ -39,7 +39,7 @@ void AGun_Raycast::FireBullet()
 	{
 		return;
 	}
-	
+
 	FHitResult OutHit;
 	if (!GunTrace(OutHit))
 	{
@@ -48,22 +48,41 @@ void AGun_Raycast::FireBullet()
 
 	IncreaseFiringMultiplier(FiringAccuracyMultipler);
 
-	if (Cast<AEnemyPawn>(OutHit.GetActor()))
+
+	if (OutHit.BoneName == TEXT("Head"))
 	{
-		ShowHitMarker();
+		ApplyDamage(OutHit, HeadShotDamage);
+	}
+	else
+	{
+		ApplyDamage(OutHit, Damage);
 	}
 
-	UGameplayStatics::SpawnEmitterAttached(MuzzleFlash, GetGunMesh(), TEXT("MuzzleSocket"), FVector(ForceInit), FRotator::ZeroRotator, 
+	if (AEnemyPawn* Enemy = Cast<AEnemyPawn>(OutHit.GetActor()))
+	{
+		if (!Enemy->IsDead())
+		{
+			if (OutHit.BoneName == TEXT("Head"))
+			{
+				ShowCritHitMarker();
+
+			}
+			else
+			{
+				ShowHitMarker();
+			}
+		}
+	}
+
+	UGameplayStatics::SpawnEmitterAttached(MuzzleFlash, GetGunMesh(), TEXT("MuzzleSocket"), FVector(ForceInit), FRotator::ZeroRotator,
 		FVector(MuzzleFlashScale, MuzzleFlashScale, MuzzleFlashScale));
 
 	FVector StartLocation = GetGunMesh()->GetSocketLocation(TEXT("MuzzleSocket"));
 	FVector Direction = GetDirectionFromStartToHit(StartLocation, OutHit);
 	FVector EndLocation = StartLocation + (MaxRange * Direction) + GetOwner()->GetVelocity();
 
-	UGameplayStatics::SpawnEmitterAtLocation(GetWorld(), ImpactEffect, OutHit.Location, OutHit.Normal.Rotation(), 
+	UGameplayStatics::SpawnEmitterAtLocation(GetWorld(), ImpactEffect, OutHit.Location, OutHit.Normal.Rotation(),
 		FVector(ImpactEffectScale, ImpactEffectScale, ImpactEffectScale));
-	
-	ApplyDamage(OutHit);
 
 	if (UMeshComponent* MeshComponent = OutHit.GetActor()->FindComponentByClass<UMeshComponent>())
 	{
