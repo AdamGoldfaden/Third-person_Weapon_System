@@ -215,3 +215,13 @@ void AGun_Base::ShowCritHitMarker()
 	
 	ReticleWidget->ShowCritHitMarker();
 }
+
+void AGun_Base::PlayControllerVibration()
+{
+	Cast<ATPSPlayerController>(GetOwnerController())->PlayDynamicForceFeedback(Intensity, Duration, true, true, true, true);
+}
+
+void AGun_Base::PlayControllerVibration(float VibrationIntensity, float VibrationDuration)
+{
+	Cast<ATPSPlayerController>(GetOwnerController())->PlayDynamicForceFeedback(VibrationIntensity, VibrationDuration, true, true, true, true);
+}

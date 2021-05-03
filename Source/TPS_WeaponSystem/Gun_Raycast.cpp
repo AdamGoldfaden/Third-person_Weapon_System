@@ -48,6 +48,7 @@ void AGun_Raycast::FireBullet()
 
 	IncreaseFiringMultiplier(FiringAccuracyMultipler);
 
+	PlayControllerVibration();
 
 	if (OutHit.BoneName == TEXT("Head"))
 	{

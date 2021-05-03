@@ -33,6 +33,9 @@ public:
 	void ShowHitMarker();
 	void ShowCritHitMarker();
 
+	void PlayControllerVibration();
+	void PlayControllerVibration(float VibrationIntensity, float VibrationDuration);
+
 	AController* GetOwnerController() const;
 	float GetAccuracyMultiplier() const;
 	FORCEINLINE EGunType GetGunType() const { return GunType; };
@@ -98,4 +101,9 @@ private:
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Gun_Base|Accuracy Multiplier", meta = (AllowPrivateAccess = "true"))
 	float FiringMultiplierDecreaseRate = 5.0f;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Gun_Base|Vibration", meta = (AllowPrivateAccess = "true"))
+	float Intensity = 0.0f; 
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Gun_Base|Vibration", meta = (AllowPrivateAccess = "true"))
+	float Duration = 0.0f;
 }; 

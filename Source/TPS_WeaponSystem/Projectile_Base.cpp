@@ -51,6 +51,11 @@ void AProjectile_Base::Explode()
 	UGameplayStatics::SpawnEmitterAtLocation(GetWorld(), ExplosionEffect, GetActorLocation(), GetActorRotation(),
 		FVector(ExplosionEffectScale, ExplosionEffectScale, ExplosionEffectScale));
 
+	if (AGun_Base* OwnerGun = Cast<AGun_Base>(GetOwner()))
+	{
+		OwnerGun->PlayControllerVibration(VibrationIntensity, VibrationDuration);
+	}
+
 	TArray<AActor*> HitActors;
 
 	TArray<AActor*> IgnoreActors;
@@ -82,11 +87,14 @@ void AProjectile_Base::Explode()
 			MeshComponent->AddRadialImpulse(GetActorLocation(), ExplosionRadius, ExplosionForce, ERadialImpulseFalloff::RIF_Constant);
 		}
 
-		if (Cast<AEnemyPawn>(Actor))
+		if (AEnemyPawn* Enemy = Cast<AEnemyPawn>(Actor))
 		{
-			if (AGun_Base* OwnerGun = Cast<AGun_Base>(GetOwner()))
+			if (!Enemy->IsDead())
 			{
-				OwnerGun->ShowHitMarker();
+				if (AGun_Base* OwnerGun = Cast<AGun_Base>(GetOwner()))
+				{
+					OwnerGun->ShowHitMarker();
+				}
 			}
 		}
 	}

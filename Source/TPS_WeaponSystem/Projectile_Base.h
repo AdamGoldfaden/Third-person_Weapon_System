@@ -11,11 +11,17 @@ class TPS_WEAPONSYSTEM_API AProjectile_Base : public AActor
 {
 	GENERATED_BODY()
 
-private:
-	UPROPERTY(EditDefaultsOnly, Category = "Projectile_Base|ProjectileParams", BlueprintReadOnly, meta = (AllowPrivateAccess = "true"))
-	bool bShouldFollowPlayerVelocity = false;
+public:
+	AProjectile_Base();
+	virtual void Tick(float DeltaTime) override;
+	void AdjustVelocity();
+
+	UProjectileMovementComponent* GetProjectileMovement() { return ProjectileMovement; }
 
 protected:
+	virtual void BeginPlay() override;
+	virtual void Explode();
+
 	FVector InitialVelocity;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, meta = (AllowPrivateAccess = "true"))
@@ -36,17 +42,17 @@ protected:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Projectile_Base|Explosion", meta = (AllowPrivateAccess = "true"))
 	float ExplosionEffectScale;
 
-	virtual void BeginPlay() override;
-	virtual void Explode();
-
 	UFUNCTION()
 	virtual void OnHit(UPrimitiveComponent* HitComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, FVector NormalImpulse,
 		const FHitResult& Hit) {}
 
-public:	
-	AProjectile_Base();
-	virtual void Tick(float DeltaTime) override;
-	void AdjustVelocity();
+private:
+	UPROPERTY(EditDefaultsOnly, Category = "Projectile_Base|ProjectileParams", BlueprintReadOnly, meta = (AllowPrivateAccess = "true"))
+	bool bShouldFollowPlayerVelocity = false;
 
-	UProjectileMovementComponent* GetProjectileMovement() { return ProjectileMovement; }
+	UPROPERTY(EditDefaultsOnly, Category = "Projectile_Base|Controller Vibration", BlueprintReadOnly, meta = (AllowPrivateAccess = "true"))
+	float VibrationIntensity = 1.0f;
+	UPROPERTY(EditDefaultsOnly, Category = "Projectile_Base|Controller Vibration", BlueprintReadOnly, meta = (AllowPrivateAccess = "true"))
+	float VibrationDuration = 1.0f;
+
 };
