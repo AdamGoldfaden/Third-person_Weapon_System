@@ -4,6 +4,9 @@
 #include "GameFramework/GameModeBase.h"
 #include "TPS_WeaponSystemGameMode.generated.h"
 
+class AEnemyPawn;
+class AStaticMeshActor;
+
 UCLASS(minimalapi)
 class ATPS_WeaponSystemGameMode : public AGameModeBase
 {
@@ -17,8 +20,8 @@ protected:
 	virtual void BeginPlay() override;
 
 private:
-	TArray<AActor*> Enemies;
-	TArray<AActor*> PhysicsObjects;
+	TArray<AEnemyPawn*> Enemies;
+	TArray<AStaticMeshActor*> PhysicsObjects;
 
 	TArray<FTransform> EnemyTransforms;
 	TArray<FTransform> PhysicsObjectTransforms;

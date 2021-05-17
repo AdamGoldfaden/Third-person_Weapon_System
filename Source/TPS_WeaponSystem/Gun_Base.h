@@ -21,7 +21,6 @@ class TPS_WEAPONSYSTEM_API AGun_Base : public AActor
 public:	
 	AGun_Base();
 	void ConsumeAmmo(uint8 AmmoToConsume);
-	virtual void Tick(float DeltaTime) override;
 	virtual void StartShooting();
 	virtual void StopShooting();
 	virtual void Reload();
@@ -59,6 +58,8 @@ public:
 
 protected:
 	virtual void BeginPlay() override;
+	virtual void Tick(float DeltaTime) override;
+
 	virtual bool GunTrace(FHitResult& OutHit);
 	virtual FVector GetDirectionFromStartToHit(const FVector& StartLocation, FHitResult HitResult) const;
 

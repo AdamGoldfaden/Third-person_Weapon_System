@@ -50,7 +50,8 @@ void AGun_Raycast::FireBullet()
 
 	PlayControllerVibration();
 
-	if (OutHit.BoneName == TEXT("Head"))
+	static FName BoneName = TEXT("Head");
+	if (OutHit.BoneName == BoneName)
 	{
 		ApplyDamage(OutHit, HeadShotDamage);
 	}
@@ -63,7 +64,7 @@ void AGun_Raycast::FireBullet()
 	{
 		if (!Enemy->IsDead())
 		{
-			if (OutHit.BoneName == TEXT("Head"))
+			if (OutHit.BoneName == BoneName)
 			{
 				ShowCritHitMarker();
 
@@ -75,10 +76,11 @@ void AGun_Raycast::FireBullet()
 		}
 	}
 
-	UGameplayStatics::SpawnEmitterAttached(MuzzleFlash, GetGunMesh(), TEXT("MuzzleSocket"), FVector(ForceInit), FRotator::ZeroRotator,
+	static FName SocketName = TEXT("MuzzleSocket");
+	UGameplayStatics::SpawnEmitterAttached(MuzzleFlash, GetGunMesh(), SocketName, FVector(ForceInit), FRotator::ZeroRotator,
 		FVector(MuzzleFlashScale, MuzzleFlashScale, MuzzleFlashScale));
 
-	FVector StartLocation = GetGunMesh()->GetSocketLocation(TEXT("MuzzleSocket"));
+	FVector StartLocation = GetGunMesh()->GetSocketLocation(SocketName);
 	FVector Direction = GetDirectionFromStartToHit(StartLocation, OutHit);
 	FVector EndLocation = StartLocation + (MaxRange * Direction) + GetOwner()->GetVelocity();
 

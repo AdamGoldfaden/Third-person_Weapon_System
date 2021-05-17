@@ -226,5 +226,8 @@ void APlayerCharacter::CreateNewGun(uint8 GunClassIndex)
 
 void APlayerCharacter::ResetLevel()
 {
-	Cast<ATPS_WeaponSystemGameMode>(UGameplayStatics::GetGameMode(GetWorld()))->ResetLevel();
+	if (ATPS_WeaponSystemGameMode* GameMode = Cast<ATPS_WeaponSystemGameMode>(UGameplayStatics::GetGameMode(this)))
+	{
+		GameMode->ResetLevel();
+	}
 }
