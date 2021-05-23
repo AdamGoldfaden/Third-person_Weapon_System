@@ -139,6 +139,7 @@ void APlayerCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCom
 	PlayerInputComponent->BindAction("SwitchToNextGun", IE_Pressed, this, &APlayerCharacter::SwitchToNextGun);
 	PlayerInputComponent->BindAction("SwitchToGun1", IE_Pressed, this, &APlayerCharacter::SwitchToGun1);
 	PlayerInputComponent->BindAction("SwitchToGun2", IE_Pressed, this, &APlayerCharacter::SwitchToGun2);
+	PlayerInputComponent->BindAction("SwitchToGun3", IE_Pressed, this, &APlayerCharacter::SwitchToGun3);
 	PlayerInputComponent->BindAction("Crouch", IE_Pressed, this, &APlayerCharacter::StartCrouch);
 	PlayerInputComponent->BindAction("Crouch", IE_Released, this, &APlayerCharacter::StartUnCrouch);
 	PlayerInputComponent->BindAction("ResetLevel", IE_Pressed, this, &APlayerCharacter::ResetLevel);
@@ -210,6 +211,11 @@ void APlayerCharacter::SwitchToGun1()
 void APlayerCharacter::SwitchToGun2()
 {
 	SwitchGun(1);
+}
+
+void APlayerCharacter::SwitchToGun3()
+{
+	SwitchGun(2);
 }
 
 void APlayerCharacter::CreateNewGun(uint8 GunClassIndex) 

@@ -11,7 +11,6 @@ void AProjectile_ClusterBomb::OnHit(UPrimitiveComponent* HitComp, AActor* OtherA
 
 	Explode();
 
-
 	FVector ProjectileSpawnLocation = Hit.Location;
 	ProjectileSpawnLocation += (ProjectileSpawnHeight * Hit.Normal);
 

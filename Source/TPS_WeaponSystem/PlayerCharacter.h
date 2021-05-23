@@ -51,6 +51,7 @@ private:
 
 	void SwitchToGun1();
 	void SwitchToGun2();
+	void SwitchToGun3();
 
 	void CreateNewGun(uint8 GunClassIndex);
 
@@ -95,6 +96,4 @@ private:
 	uint8 StartingGunIndex = 0;
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "APlayerCharacter|GunTypes", meta = (AllowPrivateAccess = "true"))
 	TArray<TSubclassOf<AGun_Base>> GunClasses;
-
-	
 };

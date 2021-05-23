@@ -37,6 +37,7 @@ protected:
 	float ExplosionDamage = 20.f;
 	UPROPERTY(EditDefaultsOnly, Category = "Projectile_Base|Explosion", BlueprintReadOnly, meta = (AllowPrivateAccess = "true"))
 	float ExplosionForce= 100000.f;
+
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Projectile_Base|Explosion", meta = (AllowPrivateAccess = "true"))
 	UParticleSystem* ExplosionEffect;
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Projectile_Base|Explosion", meta = (AllowPrivateAccess = "true"))

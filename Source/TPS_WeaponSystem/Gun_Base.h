@@ -8,7 +8,8 @@ UENUM(BlueprintType)
 enum EGunType
 {
 	Auto UMETA(DisplayName, "AutoRifle"),
-	Cluster UMETA(DisplayName, "ClusterBomb")
+	Cluster UMETA(DisplayName, "ClusterBomb"),
+	Turret UMETA(DisplayName, "DeployableTurret")
 };
 
 class UUserWidget;
