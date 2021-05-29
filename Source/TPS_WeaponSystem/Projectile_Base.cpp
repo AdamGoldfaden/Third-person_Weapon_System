@@ -101,3 +101,8 @@ void AProjectile_Base::Explode()
 
 	//DrawDebugSphere(GetWorld(), GetActorLocation(), ExplosionRadius, 32, FColor::Red, false, 1.f);
 }
+
+void AProjectile_Base::SetProjectilePooler(AProjectilePooler* Pooler)
+{
+	ProjectilePooler = Pooler;
+}

@@ -1,5 +1,6 @@
 #include "Projectile_Cluster.h"
 #include "GameFramework/ProjectileMovementComponent.h"
+#include "ProjectilePooler.h"
 
 const float AProjectile_Cluster::GRAVITY = - 9.81;
 
@@ -7,7 +8,8 @@ void AProjectile_Cluster::OnHit(UPrimitiveComponent* HitComp, AActor* OtherActor
 	const FHitResult& Hit)
 {
 	Explode();
-	Destroy();
+
+	ProjectilePooler->ReturnProjectile(this);
 }
 
 void AProjectile_Cluster::Tick(float DeltaTime)
